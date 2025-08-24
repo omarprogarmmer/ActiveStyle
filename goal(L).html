@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام متابعة أهداف اللياقة البدنية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1a2a6c;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 20px;
+        }
+        
+        .card {
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            color: #1a2a6c;
+            border-bottom: 2px solid #fdbb2d;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        button {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #b21f1f;
+        }
+        
+        .btn-secondary {
+            background: #fdbb2d;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #fdaa0d;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+        }
+        
+        .goals-list {
+            margin-top: 20px;
+        }
+        
+        .goal-item {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .goal-title {
+            font-weight: bold;
+            color: #1a2a6c;
+            font-size: 1.1rem;
+        }
+        
+        .goal-date {
+            color: #b21f1f;
+            font-size: 0.9rem;
+        }
+        
+        .goal-values {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #eee;
+            border-radius: 5px;
+        }
+        
+        .current-value, .target-value {
+            text-align: center;
+        }
+        
+        .value-label {
+            font-size: 0.8rem;
+            color: #555;
+        }
+        
+        .value-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #e6f7ff;
+            border-radius: 5px;
+        }
+        
+        .date-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .date-label {
+            font-size: 0.8rem;
+            color: #555;
+        }
+        
+        .date-value {
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        
+        .days-left {
+            color: #b21f1f;
+            font-weight: bold;
+        }
+        
+        .goal-progress {
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            height: 15px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a2a6c, #fdbb2d);
+            border-radius: 10px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .goal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .goal-actions button {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .delete-btn {
+            background: #b21f1f;
+        }
+        
+        .motivation {
+            text-align: center;
+            padding: 15px;
+            background: rgba(253, 187, 45, 0.2);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .motivation i {
+            color: #b21f1f;
+            margin-bottom: 5px;
+        }
+        
+        .motivation p {
+            font-style: italic;
+            color: #1a2a6c;
+        }
+        
+        .date-inputs {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .date-inputs .form-group {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .goal-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .goal-date {
+                margin-top: 5px;
+            }
+            
+            .goal-values {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>نظام متابعة أهداف اللياقة البدنية</h1>
+            <p class="subtitle">سجل أهدافك وتقدمك نحو لياقة أفضل</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title">إضافة هدف لياقة جديد</h2>
+                <form id="goalForm">
+                    <div class="form-group">
+                        <label for="goalName">اسم الهدف</label>
+                        <input type="text" id="goalName" placeholder="مثال: خسارة الوزن، زيادة الكتلة العضلية" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentValue">القيمة الحالية (اكتب ما يناسبك)</label>
+                        <input type="text" id="currentValue" placeholder="مثال: 80 كجم، 10 تمارين شهريًا" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetValue">القيمة المستهدفة (اكتب ما يناسبك)</label>
+                        <input type="text" id="targetValue" placeholder="مثال: 75 كجم، 15 تمرين شهريًا" required>
+                    </div>
+                    
+                    <div class="date-inputs">
+                        <div class="form-group">
+                            <label for="startDate">تاريخ البدء</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="targetDate">تاريخ المستهدف</label>
+                            <input type="date" id="targetDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="goalDescription">ملاحظات إضافية (اختياري)</label>
+                        <textarea id="goalDescription" placeholder="أي تفاصيل إضافية تريد تسجيلها..."></textarea>
+                    </div>
+                    
+                    <button type="submit">إضافة الهدف <i class="fas fa-plus"></i></button>
+                </form>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="totalGoals">0</div>
+                        <div class="stat-label">إجمالي الأهداف</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-value" id="completedGoals">0</div>
+                        <div class="stat-label">الأهداف المحققة</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-value" id="activeGoals">0</div>
+                        <div class="stat-label">الأهداف النشطة</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="card-title">أهدافي</h2>
+            <div id="goalsList" class="goals-list">
+                <!-- الأهداف ستضاف هنا ديناميكيًا -->
+            </div>
+            
+            <div class="motivation">
+                <i class="fas fa-quote-left fa-2x"></i>
+                <p>الاستمرارية هي سر النجاح في رحلة اللياقة البدنية</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التخزين
+        let goals = JSON.parse(localStorage.getItem('fitnessGoals')) || [];
+        
+        // عناصر DOM
+        const goalForm = document.getElementById('goalForm');
+        const goalsList = document.getElementById('goalsList');
+        const totalGoalsElem = document.getElementById('totalGoals');
+        const completedGoalsElem = document.getElementById('completedGoals');
+        const activeGoalsElem = document.getElementById('activeGoals');
+        
+        // تهيئة التواريخ
+        document.getElementById('startDate').valueAsDate = new Date();
+        
+        // إضافة أسبوعين كتاريخ مستهدف افتراضي
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 14);
+        document.getElementById('targetDate').valueAsDate = targetDate;
+        
+        // تحديث الإحصائيات
+        function updateStats() {
+            totalGoalsElem.textContent = goals.length;
+            
+            const completedGoals = goals.filter(goal => goal.completed);
+            completedGoalsElem.textContent = completedGoals.length;
+            
+            const activeGoals = goals.filter(goal => !goal.completed);
+            activeGoalsElem.textContent = activeGoals.length;
+        }
+        
+        // حساب الأيام المتبقية
+        function calculateDaysLeft(targetDate) {
+            const today = new Date();
+            const target = new Date(targetDate);
+            const diffTime = target - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        }
+        
+        // حساب نسبة الإنجاز بناءً على الوقت المنقضي
+        function calculateTimeProgress(startDate, targetDate) {
+            const start = new Date(startDate);
+            const target = new Date(targetDate);
+            const today = new Date();
+            
+            if (today >= target) return 100;
+            if (today <= start) return 0;
+            
+            const totalTime = target - start;
+            const elapsedTime = today - start;
+            return Math.min(100, Math.round((elapsedTime / totalTime) * 100));
+        }
+        
+        // تحديث قائمة الأهداف
+        function updateGoalsList() {
+            goalsList.innerHTML = '';
+            
+            if (goals.length === 0) {
+                goalsList.innerHTML = '<p style="text-align: center; padding: 20px; color: #555;">لا توجد أهداف مسجلة بعد. ابدأ بإضافة هدف جديد!</p>';
+                return;
+            }
+            
+            // عرض الأهداف من الأحدث إلى الأقدم
+            goals.slice().reverse().forEach((goal, index) => {
+                const goalItem = document.createElement('div');
+                goalItem.className = 'goal-item';
+                
+                // حساب الأيام المتبقية ونسبة الإنجاز
+                const daysLeft = calculateDaysLeft(goal.targetDate);
+                const timeProgress = calculateTimeProgress(goal.startDate, goal.targetDate);
+                const progress = goal.completed ? 100 : timeProgress;
+                
+                goalItem.innerHTML = `
+                    <div class="goal-header">
+                        <div class="goal-title">${goal.name}</div>
+                        <div class="goal-date">${new Date(goal.targetDate).toLocaleDateString('ar-EG')}</div>
+                    </div>
+                    
+                    ${goal.description ? `<p style="margin-bottom: 10px; color: #555;">${goal.description}</p>` : ''}
+                    
+                    <div class="goal-values">
+                        <div class="current-value">
+                            <div class="value-label">الحالي</div>
+                            <div class="value-number">${goal.currentValue}</div>
+                        </div>
+                        
+                        <div class="target-value">
+                            <div class="value-label">المستهدف</div>
+                            <div class="value-number">${goal.targetValue}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="date-info">
+                        <div class="date-item">
+                            <div class="date-label">تاريخ البدء</div>
+                            <div class="date-value">${new Date(goal.startDate).toLocaleDateString('ar-EG')}</div>
+                        </div>
+                        
+                        <div class="date-item">
+                            <div class="date-label">المستهدف</div>
+                            <div class="date-value">${new Date(goal.targetDate).toLocaleDateString('ar-EG')}</div>
+                        </div>
+                        
+                        <div class="date-item">
+                            <div class="date-label">الأيام المتبقية</div>
+                            <div class="days-left">${daysLeft} يوم</div>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>التقدم الزمني</span>
+                            <span>${progress}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-actions">
+                        <button class="${goal.completed ? 'btn-secondary' : ''}" onclick="toggleGoal(${goals.length - 1 - index})">
+                            ${goal.completed ? 'إعادة فتح' : 'تم الإنجاز'}
+                        </button>
+                        <button class="delete-btn" onclick="deleteGoal(${goals.length - 1 - index})">حذف</button>
+                    </div>
+                `;
+                
+                goalsList.appendChild(goalItem);
+            });
+        }
+        
+        // حذف الهدف
+        function deleteGoal(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الهدف؟')) {
+                goals.splice(index, 1);
+                localStorage.setItem('fitnessGoals', JSON.stringify(goals));
+                updateGoalsList();
+                updateStats();
+            }
+        }
+        
+        // تبديل حالة الهدف (مكتمل/غير مكتمل)
+        function toggleGoal(index) {
+            goals[index].completed = !goals[index].completed;
+            localStorage.setItem('fitnessGoals', JSON.stringify(goals));
+            updateGoalsList();
+            updateStats();
+        }
+        
+        // تسجيل هدف جديد
+        goalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newGoal = {
+                name: document.getElementById('goalName').value,
+                currentValue: document.getElementById('currentValue').value,
+                targetValue: document.getElementById('targetValue').value,
+                startDate: document.getElementById('startDate').value,
+                targetDate: document.getElementById('targetDate').value,
+                description: document.getElementById('goalDescription').value,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            goals.push(newGoal);
+            localStorage.setItem('fitnessGoals', JSON.stringify(goals));
+            
+            goalForm.reset();
+            
+            // إعادة تعيين التواريخ
+            document.getElementById('startDate').valueAsDate = new Date();
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 14);
+            document.getElementById('targetDate').valueAsDate = targetDate;
+            
+            updateGoalsList();
+            updateStats();
+            
+            // عرض رسالة نجاح
+            alert('تم إضافة الهدف بنجاح!');
+        });
+        
+        // التهيئة الأولية
+        updateGoalsList();
+        updateStats();
+    </script>
+</body>
+</html>

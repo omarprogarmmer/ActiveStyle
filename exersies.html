@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين جاهزة للتعديل</title>
+<style>
+body { font-family: Tahoma,sans-serif; background:#f0f9ff; padding:20px; }
+h1 { text-align:center; color:#4dabf7; }
+.accordion { cursor: pointer; background: #2d6a4f; color: white; padding: 10px; margin-top: 10px; border-radius:8px; font-weight:bold; }
+.panel { display:none; padding: 10px; background: #fff; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+table { width:100%; border-collapse: collapse; margin-top:10px; }
+th, td { padding:10px; border:1px solid #ccc; text-align:center; }
+th { background:#51cf66; color:white; }
+td { background:#fff; }
+input[type=number], input[type=text] { width:80px; padding:5px; border-radius:5px; border:1px solid #ccc; text-align:center; }
+button { padding:5px 10px; border:none; border-radius:5px; background:#4dabf7; color:white; cursor:pointer; }
+form { margin-top:10px; display:flex; flex-wrap:wrap; justify-content:center; gap:5px; }
+progress { border-radius:5px; width: 100%; height: 20px; margin-top:5px; }
+.progress-container { margin:10px 0; }
+</style>
+</head>
+<body>
+
+<h1>🏋️ جدول التمارين</h1>
+<div id="muscleSections"></div>
+
+<!-- شريط التقدم العام -->
+<div class="progress-container">
+  <label for="overallProgress">التقدم العام:</label>
+  <progress id="overallProgress" value="0" max="100"></progress>
+  <span id="overallProgressText">0%</span>
+</div>
+
+<script>
+const exercises = {
+  "صدر": [
+    {name:"ضغط بنش", reps:12, weight:50, originalReps:12},
+    {name:"فلاي دمبل", reps:10, weight:12, originalReps:10}
+  ],
+  "زند أمامي": [
+    {name:"بايسبس دمبل", reps:15, weight:10, originalReps:15},
+    {name:"بايسبس بار", reps:12, weight:20, originalReps:12}
+  ],
+  "ظهر": [
+    {name:"سحب خلفي", reps:12, weight:40, originalReps:12},
+    {name:"تمرين ظهر دمبل", reps:10, weight:15, originalReps:10}
+  ],
+  "أرجل": [
+    {name:"سكوات", reps:15, weight:60, originalReps:15},
+    {name:"لانجز", reps:12, weight:20, originalReps:12}
+  ],
+  "أكتاف": [
+    {name:"رفرفة جانبية", reps:12, weight:8, originalReps:12},
+    {name:"ضغط أكتاف", reps:10, weight:25, originalReps:10}
+  ]
+};
+
+// إنشاء شريط تقدم لكل عضلة
+function createMuscleProgress(muscle, panel) {
+  const container = document.createElement('div');
+  container.className = 'progress-container';
+  const label = document.createElement('label');
+  label.textContent = `تقدم ${muscle}:`;
+  label.style.display = 'block';
+  const progress = document.createElement('progress');
+  progress.id = `${muscle}-progress`;
+  progress.value = 0;
+  progress.max = 100;
+  const span = document.createElement('span');
+  span.id = `${muscle}-progress-text`;
+  span.textContent = '0%';
+  span.style.marginLeft = '5px';
+  container.appendChild(label);
+  container.appendChild(progress);
+  container.appendChild(span);
+  panel.insertBefore(container, panel.firstChild);
+}
+
+// تحديث شريط العضلة حسب نسبة الإنجاز
+function updateMuscleProgress(muscle) {
+  const total = exercises[muscle].length;
+  let percentSum = 0;
+  exercises[muscle].forEach(ex => {
+    let repsPercent = Math.min((ex.reps / ex.originalReps) * 100, 100);
+    percentSum += repsPercent;
+  });
+  const avgPercent = Math.round(percentSum / total);
+  document.getElementById(`${muscle}-progress`).value = avgPercent;
+  document.getElementById(`${muscle}-progress-text`).textContent = avgPercent + '%';
+}
+
+// تحديث شريط التقدم العام
+function updateOverallProgress() {
+  let totalExercises = 0;
+  let percentSum = 0;
+  Object.keys(exercises).forEach(muscle => {
+    exercises[muscle].forEach(ex => {
+      let repsPercent = Math.min((ex.reps / ex.originalReps) * 100, 100);
+      percentSum += repsPercent;
+      totalExercises++;
+    });
+  });
+  const overallPercent = Math.round(percentSum / totalExercises);
+  document.getElementById('overallProgress').value = overallPercent;
+  document.getElementById('overallProgressText').textContent = overallPercent + '%';
+}
+
+// رسم الأقسام مع شريط العضلة
+function renderSections(){
+  const container = document.getElementById('muscleSections');
+  container.innerHTML = '';
+  Object.keys(exercises).forEach(muscle => {
+    const acc = document.createElement('div');
+    acc.className = 'accordion';
+    acc.textContent = muscle;
+    container.appendChild(acc);
+
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    createMuscleProgress(muscle, panel);
+
+    const table = document.createElement('table');
+    table.innerHTML = '<thead><tr><th>الحركة</th><th>العدات</th><th>الوزن (كغ)</th><th>تحديث</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    exercises[muscle].forEach((ex,index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${ex.name}</td>
+        <td><input type="number" value="${ex.reps}" min="1" id="${muscle}-reps-${index}"></td>
+        <td><input type="number" value="${ex.weight}" min="0" id="${muscle}-weight-${index}"></td>
+        <td><button onclick="updateExercise('${muscle}',${index})">✔️</button></td>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    panel.appendChild(table);
+
+    const form = document.createElement('form');
+    form.innerHTML = `<input type="text" placeholder="اسم الحركة" required id="${muscle}-new-name">
+      <input type="number" placeholder="العدات" min="1" required id="${muscle}-new-reps">
+      <input type="number" placeholder="الوزن" min="0" required id="${muscle}-new-weight">
+      <button type="submit">➕ إضافة حركة</button>`;
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const name = document.getElementById(`${muscle}-new-name`).value;
+      const reps = parseInt(document.getElementById(`${muscle}-new-reps`).value);
+      const weight = parseInt(document.getElementById(`${muscle}-new-weight`).value);
+      exercises[muscle].push({name,reps,weight,originalReps:reps});
+      renderSections();
+      updateOverallProgress();
+    });
+    panel.appendChild(form);
+
+    container.appendChild(panel);
+    acc.addEventListener('click', ()=>{ panel.style.display = panel.style.display==='block'?'none':'block'; });
+    updateMuscleProgress(muscle);
+  });
+  updateOverallProgress();
+}
+
+// تحديث تمرين
+function updateExercise(muscle,index){
+  const reps = parseInt(document.getElementById(`${muscle}-reps-${index}`).value);
+  const weight = parseInt(document.getElementById(`${muscle}-weight-${index}`).value);
+  exercises[muscle][index].reps = reps;
+  exercises[muscle][index].weight = weight;
+  updateMuscleProgress(muscle);
+  updateOverallProgress();
+  alert('تم التحديث!');
+}
+
+// تشغيل العرض الأولي
+renderSections();
+</script>
+
+</body>
+</html>

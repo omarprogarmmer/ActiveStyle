@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق الصحة للجوال</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      background-color: #f0f9ff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background-color: #457b9d;
+      color: white;
+      padding: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      position: relative;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      margin: auto;
+    }
+
+    .circle:hover {
+      transform: scale(1.1);
+    }
+
+    .circle .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon {
+      font-size: 40px; /* أيقونات كبيرة */
+      margin-bottom: 5px;
+    }
+
+    /* ألوان الأقسام */
+    .fasting { background-color: #ff6b6b; }
+    .exercise { background-color: #4dabf7; }
+    .goals { background-color: #51cf66; }
+    .diet { background-color: #ffa94d; }
+    .sleep { background-color: #9775fa; }
+    .water { background-color: #15aabf; }
+    .challenges { background-color: #f06595; }
+    .notes { background-color: #adb5bd; color: #000; }
+
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr); /* دائمًا 3 أعمدة */
+        gap: 15px;
+      }
+      .circle {
+        width: 90px;
+        height: 90px;
+      }
+      .icon {
+        font-size: 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>🌿 تطبيق الصحة واللياقة</header>
+
+  <div class="grid">
+    
+    <a href="exersies.html" class="circle exercise">
+      <div class="content">
+        <div class="icon">🏋️</div>
+        تسجيل التقدم
+      </div>
+    </a>
+    <a href="t.html" class="circle diet">
+      <div class="content">
+        <div class="icon">🍎</div>
+        الغذاء
+      </div>
+    </a>
+    <a href="h.html" class="circle goals">
+      <div class="content">
+        <div class="icon">🎯</div>
+        الأهداف
+      </div>
+    </a>
+    
+   
+
+    <a href="test.html" class="circle challenges">
+      <div class="content">
+        <div class="icon">🏆</div>
+        التحديات
+      </div>
+    </a>
+    
+    </a>
+  </div>
+
+</body>
+</html>

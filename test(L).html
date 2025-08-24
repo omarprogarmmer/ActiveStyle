@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي اللياقة اليومي - طرق اتصال بديلة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #FF9800;
+            --accent-color: #1565C0;
+            --light-color: #F5F5F5;
+            --dark-color: #333;
+            --danger-color: #D32F2F;
+            --success-color: #388E3C;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f8ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .date-display {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .streak-counter {
+            background-color: var(--secondary-color);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            background-color: #E0E0E0;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .task-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border-top: 4px solid var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .task-card.completed {
+            border-top-color: var(--primary-color);
+            background-color: #E8F5E9;
+        }
+        
+        .task-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .task-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .task-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-complete {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-complete:hover {
+            background-color: #1B5E20;
+        }
+        
+        .btn-incomplete {
+            background-color: #F44336;
+            color: white;
+        }
+        
+        .btn-incomplete:hover {
+            background-color: #D32F2F;
+        }
+        
+        .btn-add {
+            background-color: var(--accent-color);
+            color: white;
+            display: block;
+            margin: 20px auto;
+            padding: 12px 24px;
+        }
+        
+        .btn-delete {
+            background-color: transparent;
+            color: #999;
+            padding: 5px;
+            font-size: 1.2rem;
+        }
+        
+        .btn-delete:hover {
+            color: var(--danger-color);
+        }
+        
+        .progress-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #E0E0E0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .achievements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            background-color: #FFF8E1;
+            border: 2px solid #FFD54F;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+        }
+        
+        .badge::after {
+            content: attr(data-title);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            white-space: nowrap;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .badge:hover::after {
+            opacity: 1;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .random-exercise-section {
+            background: linear-gradient(to right, #E8F5E9, #C8E6C9);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .random-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .random-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .random-btn:hover {
+            background-color: #0D47A1;
+        }
+        
+        .random-btn.active {
+            background-color: var(--primary-color);
+        }
+        
+        .timer-display {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .save-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #555;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .contact-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .contact-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .contact-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .contact-tab.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .contact-form button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .app-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .start-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .start-btn:hover {
+            background-color: #2E7D32;
+        }
+        
+        .pause-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .pause-btn:hover {
+            background-color: #EF6C00;
+        }
+        
+        .stop-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .stop-btn:hover {
+            background-color: #B71C1C;
+        }
+        
+        .app-status {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: #E8F5E9;
+            color: var(--success-color);
+        }
+        
+        .status-paused {
+            background-color: #FFF8E1;
+            color: #F57C00;
+        }
+        
+        .status-stopped {
+            background-color: #FFEBEE;
+            color: var(--danger-color);
+        }
+        
+        .user-id-display {
+            background-color: #E3F2FD;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-id-display span {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .copy-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .tasks-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .random-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                transform: translateY(-100%);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+            
+            .app-controls {
+                flex-direction: column;
+            }
+            
+            .contact-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>تحدي اللياقة اليومي</h1>
+            <div class="date-display" id="current-date">الاثنين، ١ يناير ٢٠٢٤</div>
+            <div class="streak-counter">سلسلة الإنجاز: <span id="streak-count">0</span> يوم</div>
+        </header>
+        
+        <div class="app-controls">
+            <button class="control-btn start-btn" onclick="startApp()">
+                <i class="fas fa-play"></i> بدء التحدي
+            </button>
+            <button class="control-btn pause-btn" onclick="pauseApp()">
+                <i class="fas fa-pause"></i> إيقاف مؤقت
+            </button>
+            <button class="control-btn stop-btn" onclick="stopApp()">
+                <i class="fas fa-stop"></i> إيقاف التطبيق
+            </button>
+        </div>
+        
+        <div class="app-status status-stopped" id="app-status">
+            التطبيق متوقف حالياً
+        </div>
+        
+        <div class="random-exercise-section">
+            <h2>تمرين عشوائي</h2>
+            <div id="random-exercise">
+                <h3 id="random-exercise-name">تمرين القرفصاء</h3>
+                <p id="random-exercise-desc">أداء 3 مجموعات من 15 تكرار لتمرين القرفصاء لتعزيز قوة الساقين والأرداف.</p>
+                <div class="timer-display" id="next-random-timer">التالي: 00:00:00</div>
+            </div>
+            <div class="random-controls">
+                <button class="random-btn" onclick="changeRandomExercise()">
+                    <i class="fas fa-random"></i> تمرين عشوائي الآن
+                </button>
+                <button class="random-btn active" onclick="setRandomInterval('minute')">
+                    كل دقيقة
+                </button>
+                <button class="random-btn" onclick="setRandomInterval('hour')">
+                    كل ساعة
+                </button>
+                <button class="random-btn" onclick="setRandomInterval('day')">
+                    يومي
+                </button>
+                <button class="random-btn" onclick="stopRandomExercise()">
+                    <i class="fas fa-stop"></i> إيقاف
+                </button>
+            </div>
+            <div class="task-actions">
+                <button class="btn btn-complete" onclick="addRandomToTasks()">
+                    <i class="fas fa-plus"></i> أضف إلى تماريني
+                </button>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h3><i class="fas fa-bell"></i> طرق التواصل البديلة</h3>
+            
+            <div class="contact-tabs">
+                <div class="contact-tab active" onclick="switchContactTab('email')">البريد الإلكتروني</div>
+                <div class="contact-tab" onclick="switchContactTab('username')">اسم المستخدم</div>
+                <div class="contact-tab" onclick="switchContactTab('userid')">المعرف الفريد</div>
+            </div>
+            
+            <div id="email-tab" class="contact-tab-content">
+                <p>أدخل بريدك الإلكتروني لاستلام الإشعارات:</p>
+                <div class="contact-form">
+                    <input type="email" id="email-input" placeholder="example@email.com">
+                    <button onclick="enableEmailNotifications()">تفعيل الإشعارات</button>
+                </div>
+            </div>
+            
+            <div id="username-tab" class="contact-tab-content" style="display: none;">
+                <p>اختر اسم مستخدم فريد للإشعارات:</p>
+                <div class="contact-form">
+                    <input type="text" id="username-input" placeholder="اسم المستخدم">
+                    <button onclick="enableUsernameNotifications()">تفعيل الإشعارات</button>
+                </div>
+            </div>
+            
+            <div id="userid-tab" class="contact-tab-content" style="display: none;">
+                <p>معرفك الفريد للإشعارات:</p>
+                <div class="user-id-display">
+                    <span id="user-id">USR-5X8A2B9C</span>
+                    <button class="copy-btn" onclick="copyUserId()">نسخ</button>
+                </div>
+                <p>استخدم هذا المعرف لتلقي الإشعارات دون مشاركة معلوماتك الشخصية</p>
+            </div>
+            
+            <div id="contact-status" style="margin-top: 10px; font-weight: bold; color: var(--accent-color);"></div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('achieved')">
+                <i class="fas fa-check-circle"></i> التمارين المنجزة
+            </button>
+            <button class="tab-btn" onclick="switchTab('pending')">
+                <i class="fas fa-clock"></i> التمارين قيد الإنجاز
+            </button>
+            <button class="tab-btn" onclick="switchTab('add-new')">
+                <i class="fas fa-plus"></i> إضافة تمرين جديد
+            </button>
+        </div>
+        
+        <div class="tab-content active" id="achieved-tab">
+            <h2>التمارين المنجزة</h2>
+            <div class="tasks-container" id="completed-tasks">
+                <!-- التمارين المكتملة سيتم إضافتها هنا -->
+            </div>
+            
+            <div class="empty-state" id="completed-empty">
+                <i class="fas fa-check-circle"></i>
+                <h3>لا توجد تمارين منجزة بعد</h3>
+                <p>أنهِ بعض التمارين لتظهر هنا</p>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="pending-tab">
+            <h2>التمارين قيد الإنجاز</h2>
+            <div class="tasks-container" id="pending-tasks">
+                <!-- التمارين غير المكتملة سيتم إضافتها هنا -->
+            </div>
+            
+            <div class="empty-state" id="pending-empty">
+                <i class="fas fa-clock"></i>
+                <h3>لا توجد تمارين قيد الإنجاز</h3>
+                <p>أضف تمارين جديدة أو أنهِ جميع التمارين الحالية</p>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="add-new-tab">
+            <h2>إضافة تمرين جديد</h2>
+            <div class="progress-section">
+                <h3>تقدمك اليوم</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 30%;"></div>
+                </div>
+                <div id="progress-text">30% مكتمل (3/10 تمارين)</div>
+            </div>
+            
+            <div class="modal-content" style="position: static; width: 100%; box-shadow: none;">
+                <div class="form-group">
+                    <label for="task-name">اسم التمرين</label>
+                    <input type="text" id="task-name" placeholder="مثال: تمرين الضغط">
+                </div>
+                <div class="form-group">
+                    <label for="task-desc">وصف التمرين</label>
+                    <textarea id="task-desc" placeholder="مثال: 3 مجموعات من 10 تكرارات"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-type">نوع التمرين</label>
+                    <select id="task-type">
+                        <option value="strength">تمارين القوة</option>
+                        <option value="cardio">تمارين الكارديو</option>
+                        <option value="flexibility">تمارين المرونة</option>
+                        <option value="balance">تمارين التوازن</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-complete" onclick="addNewTask()">
+                        <i class="fas fa-plus"></i> إضافة التمرين
+                    </button>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">إنجازاتك</h3>
+            <div class="achievements">
+                <div class="badge" data-title="مبتدئ اللياقة">🏆</div>
+                <div class="badge" data-title="متسابق 5 أيام">🔥</div>
+                <div class="badge" data-title="مثابر الأسبوع">💪</div>
+                <div class="badge" data-title="بطل التحدي">⭐</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="save-status" id="save-status">
+        <i class="fas fa-save"></i> تم حفظ البيانات محلياً
+    </div>
+    
+    <footer>
+        <p>تطبيق تحدي اللياقة اليومي - اصنع روتينك الصحي وحقق أهدافك</p>
+    </footer>
+
+    <div class="notification" id="start-notification">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <h4>تم بدء المهمة بنجاح!</h4>
+            <p>بياناتك تحفظ تلقائياً على جهازك</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التمارين (سيتم تخزينها في localStorage)
+        let fitnessTasks = JSON.parse(localStorage.getItem('fitnessTasks')) || [
+            { id: 1, name: "تمرين الضغط", description: "3 مجموعات من 10 تكرارات", completed: true, type: "strength" },
+            { id: 2, name: "تمرين الجلوس والوقوف", description: "3 مجموعات من 15 تكرار", completed: true, type: "strength" },
+            { id: 3, name: "تمرين البلانك", description: "3 مجموعات لمدة 30 ثانية", completed: true, type: "core" },
+            { id: 4, name: "الجري في المكان", description: "10 دقائق", completed: false, type: "cardio" },
+            { id: 5, name: "تمارين الإطالة", description: "15 دقيقة لجميع عضلات الجسم", completed: false, type: "flexibility" },
+            { id: 6, name: "تمرين القفز", description: "3 مجموعات من 20 تكرار", completed: false, type: "cardio" },
+            { id: 7, name: "تمرين المعدة", description: "3 مجموعات من 20 تكرار", completed: false, type: "core" },
+            { id: 8, name: "اليوجا", description: "20 دقيقة تمارين يوغا", completed: false, type: "flexibility" },
+            { id: 9, name: "تمرين السكوات", description: "4 مجموعات من 12 تكرار", completed: false, type: "strength" },
+            { id: 10, name: "تمرين التوازن على قدم واحدة", description: "3 مجموعات لمدة 30 ثانية لكل قدم", completed: false, type: "balance" }
+        ];
+
+        // تمارين عشوائية
+        const randomExercises = [
+            { name: "تمرين القرفصاء", description: "أداء 3 مجموعات من 15 تكرار لتمرين القرفصاء لتعزيز قوة الساقين والأرداف.", type: "strength" },
+            { name: "تمرين الضغط", description: "أداء 3 مجموعات من 10 تكرارات لتمرين الضغط لتقوية الجزء العلوي من الجسم.", type: "strength" },
+            { name: "تمرين البلانك", description: "الاستمرار في وضعية البلانك لمدة دقيقة واحدة لتقوية核心 الجسم.", type: "core" },
+            { name: "تمارين الإطالة", description: "أداء 15 دقيقة من تمارين الإطالة لتحسين مرونة الجسم.", type: "flexibility" },
+            { name: "القفز بالحبل", description: "القفز بالحبل لمدة 5 دقائق متواصلة لتحسين اللياقة القلبية.", type: "cardio" },
+            { name: "تمرين المعدة", description: "أداء 3 مجموعات من 20 تكرار لتمرين المعدة لتقوية عضلات البطن.", type: "core" },
+            { name: "تمرين السكوات", description: "أداء 4 مجموعات من 12 تكرار لتمرين السكوات مع الأوزان.", type: "strength" },
+            { name: "تمرين الرافعة المميتة", description: "أداء 3 مجموعات من 8 تكرارات لتمرين الرافعة المميتة.", type: "strength" },
+            { name: "تمرين العقلة", description: "أداء 3 مجموعات لأقصى عدد ممكن من تكرارات تمرين العقلة.", type: "strength" },
+            { name: "الجري في المكان", description: "الجري في المكان لمدة 10 دقائق لتحسين اللياقة القلبية.", type: "cardio" },
+            { name: "اليوجا", description: "أداء 20 دقيقة من تمارين اليوجا لتحسين المرونة والاسترخاء.", type: "flexibility" },
+            { name: "تمرين البيلاتس", description: "أداء 15 دقيقة من تمارين البيلاتس لتقوية核心 الجسم.", type: "core" }
+        ];
+
+        // عناصر DOM
+        const currentDateElement = document.getElementById('current-date');
+        const streakCountElement = document.getElementById('streak-count');
+        const progressFillElement = document.getElementById('progress-fill');
+        const progressTextElement = document.getElementById('progress-text');
+        const completedTasksElement = document.getElementById('completed-tasks');
+        const pendingTasksElement = document.getElementById('pending-tasks');
+        const completedEmptyElement = document.getElementById('completed-empty');
+        const pendingEmptyElement = document.getElementById('pending-empty');
+        const randomExerciseName = document.getElementById('random-exercise-name');
+        const randomExerciseDesc = document.getElementById('random-exercise-desc');
+        const nextRandomTimer = document.getElementById('next-random-timer');
+        const saveStatusElement = document.getElementById('save-status');
+        const startNotification = document.getElementById('start-notification');
+        const contactStatus = document.getElementById('contact-status');
+        const appStatusElement = document.getElementById('app-status');
+        const userIdElement = document.getElementById('user-id');
+
+        // متغيرات التمرين العشوائي
+        let randomIntervalType = localStorage.getItem('randomIntervalType') || 'minute';
+        let randomInterval;
+        let nextRandomTime = localStorage.getItem('nextRandomTime') ? new Date(parseInt(localStorage.getItem('nextRandomTime'))) : null;
+        let contactMethod = localStorage.getItem('contactMethod') || '';
+        let contactValue = localStorage.getItem('contactValue') || '';
+        let appState = localStorage.getItem('appState') || 'stopped'; // stopped, active, paused
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            renderTasks();
+            updateProgress();
+            loadStreak();
+            loadRandomExercise();
+            setupContactMethod();
+            updateAppStatus();
+            
+            // إذا كان التطبيق نشطاً، نستأنف المؤقت
+            if (appState === 'active') {
+                startRandomInterval();
+            }
+            
+            // إظهار رسالة بدء المهمة
+            showStartNotification();
+            
+            // إخفاء حالة الحفظ بعد بضع ثوان
+            setTimeout(() => {
+                saveStatusElement.style.display = 'none';
+            }, 3000);
+        });
+
+        // تبديل بين طرق التواصل
+        function switchContactTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.contact-tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // إلغاء تنشيط جميع الأزرار
+            document.querySelectorAll('.contact-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // تفعيل المحتوى المطلوب
+            document.getElementById(`${tabName}-tab`).style.display = 'block';
+            
+            // تفعيل الزر المطلوب
+            document.querySelector(`.contact-tab[onclick="switchContactTab('${tabName}')"]`).classList.add('active');
+        }
+
+        // إعداد طريقة التواصل
+        function setupContactMethod() {
+            if (contactMethod && contactValue) {
+                switch(contactMethod) {
+                    case 'email':
+                        document.getElementById('email-input').value = contactValue;
+                        contactStatus.textContent = 'الإشعارات مفعلة على: ' + contactValue;
+                        contactStatus.style.color = 'var(--success-color)';
+                        switchContactTab('email');
+                        break;
+                    case 'username':
+                        document.getElementById('username-input').value = contactValue;
+                        contactStatus.textContent = 'الإشعارات مفعلة لاسم المستخدم: ' + contactValue;
+                        contactStatus.style.color = 'var(--success-color)';
+                        switchContactTab('username');
+                        break;
+                    case 'userid':
+                        contactStatus.textContent = 'الإشعارات مفعلة باستخدام المعرف الفريد';
+                        contactStatus.style.color = 'var(--success-color)';
+                        switchContactTab('userid');
+                        break;
+                }
+            }
+            
+            // إنشاء معرف فريد إذا لم يكن موجوداً
+            if (!localStorage.getItem('userId')) {
+                const newUserId = 'USR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                localStorage.setItem('userId', newUserId);
+                userIdElement.textContent = newUserId;
+            } else {
+                userIdElement.textContent = localStorage.getItem('userId');
+            }
+        }
+
+        // تفعيل الإشعارات عبر البريد الإلكتروني
+        function enableEmailNotifications() {
+            const emailInput = document.getElementById('email-input');
+            const emailValue = emailInput.value.trim();
+            
+            if (emailValue && isValidEmail(emailValue)) {
+                contactMethod = 'email';
+                contactValue = emailValue;
+                
+                // حفظ الإعدادات
+                localStorage.setItem('contactMethod', 'email');
+                localStorage.setItem('contactValue', emailValue);
+                
+                contactStatus.textContent = 'تم تفعيل الإشعارات على: ' + emailValue;
+                contactStatus.style.color = 'var(--success-color)';
+                
+                // إرسال إشعار ترحيبي (محاكاة)
+                simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار على بريدك الإلكتروني عند كل تمرين جديد.');
+            } else {
+                contactStatus.textContent = 'يرجى إدخال بريد إلكتروني صحيح';
+                contactStatus.style.color = 'var(--danger-color)';
+            }
+        }
+
+        // تفعيل الإشعارات عبر اسم المستخدم
+        function enableUsernameNotifications() {
+            const usernameInput = document.getElementById('username-input');
+            const usernameValue = usernameInput.value.trim();
+            
+            if (usernameValue) {
+                contactMethod = 'username';
+                contactValue = usernameValue;
+                
+                // حفظ الإعدادات
+                localStorage.setItem('contactMethod', 'username');
+                localStorage.setItem('contactValue', usernameValue);
+                
+                contactStatus.textContent = 'تم تفعيل الإشعارات لاسم المستخدم: ' + usernameValue;
+                contactStatus.style.color = 'var(--success-color)';
+                
+                // إرسال إشعار ترحيبي (محاكاة)
+                simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار عند كل تمرين جديد.');
+            } else {
+                contactStatus.textContent = 'يرجى إدخال اسم مستخدم صحيح';
+                contactStatus.style.color = 'var(--danger-color)';
+            }
+        }
+
+        // تفعيل الإشعارات عبر المعرف الفريد
+        function enableUserIdNotifications() {
+            contactMethod = 'userid';
+            contactValue = localStorage.getItem('userId');
+            
+            // حفظ الإعدادات
+            localStorage.setItem('contactMethod', 'userid');
+            localStorage.setItem('contactValue', contactValue);
+            
+            contactStatus.textContent = 'تم تفعيل الإشعارات باستخدام المعرف الفريد';
+            contactStatus.style.color = 'var(--success-color)';
+            
+            // إرسال إشعار ترحيبي (محاكاة)
+            simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار عند كل تمرين جديد.');
+        }
+
+        // نسخ المعرف الفريد
+        function copyUserId() {
+            const userId = localStorage.getItem('userId');
+            navigator.clipboard.writeText(userId).then(() => {
+                contactStatus.textContent = 'تم نسخ المعرف إلى الحافظة';
+                contactStatus.style.color = 'var(--success-color)';
+            }).catch(err => {
+                contactStatus.textContent = 'فشل نسخ المعرف';
+                contactStatus.style.color = 'var(--danger-color)';
+            });
+        }
+
+        // التحقق من صحة البريد الإلكتروني
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // بدء التطبيق
+        function startApp() {
+            appState = 'active';
+            localStorage.setItem('appState', appState);
+            startRandomInterval();
+            updateAppStatus();
+            showNotification('تم بدء التحدي بنجاح!', 'success');
+        }
+
+        // إيقاف التطبيق مؤقتاً
+        function pauseApp() {
+            appState = 'paused';
+            localStorage.setItem('appState', appState);
+            stopRandomExercise();
+            updateAppStatus();
+            showNotification('تم إيقاف التحدي مؤقتاً', 'warning');
+        }
+
+        // إيقاف التطبيق بالكامل
+        function stopApp() {
+            appState = 'stopped';
+            localStorage.setItem('appState', appState);
+            stopRandomExercise();
+            updateAppStatus();
+            showNotification('تم إيقاف التحدي بالكامل', 'info');
+        }
+
+        // تحديث حالة التطبيق
+        function updateAppStatus() {
+            let statusText = '';
+            let statusClass = '';
+            
+            switch(appState) {
+                case 'active':
+                    statusText = 'التطبيق يعمل بنشاط - التحدي قيد التنفيذ';
+                    statusClass = 'status-active';
+                    break;
+                case 'paused':
+                    statusText = 'التطبيق متوقف مؤقتاً - يمكنك الاستئناف لاحقاً';
+                    statusClass = 'status-paused';
+                    break;
+                case 'stopped':
+                    statusText = 'التطبيق متوقف حالياً - ابدأ التحدي عندما تكون مستعداً';
+                    statusClass = 'status-stopped';
+                    break;
+            }
+            
+            appStatusElement.textContent = statusText;
+            appStatusElement.className = 'app-status ' + statusClass;
+        }
+
+        // إظهار إشعار
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <div>
+                    <h4>${message}</h4>
+                    <p>${new Date().toLocaleTimeString('ar-SA')}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // محاكاة إرسال إشعار
+        function simulateNotification(message) {
+            console.log('إشعار إلى ' + contactMethod + ' (' + contactValue + '): ' + message);
+            
+            // في تطبيق حقيقي، هنا سيتم الاتصال بخدمة إرسال الرسائل
+            showNotification('تم إرسال إشعار بنجاح', 'success');
+        }
+
+        // إظهار رسالة بدء المهمة
+        function showStartNotification() {
+            startNotification.classList.add('show');
+            
+            setTimeout(() => {
+                startNotification.classList.remove('show');
+            }, 3000);
+        }
+
+        // حفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('fitnessTasks', JSON.stringify(fitnessTasks));
+            localStorage.setItem('randomIntervalType', randomIntervalType);
+            
+            if (nextRandomTime) {
+                localStorage.setItem('nextRandomTime', nextRandomTime.getTime());
+            }
+            
+            // إظهار حالة الحفظ
+            saveStatusElement.style.display = 'flex';
+            
+            setTimeout(() => {
+                saveStatusElement.style.display = 'none';
+            }, 2000);
+        }
+
+        // تحديث التاريخ الحالي
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateElement.textContent = now.toLocaleDateString('ar-SA', options);
+        }
+
+        // تحميل التمرين العشوائي من الذاكرة
+        function loadRandomExercise() {
+            const savedExerciseName = localStorage.getItem('randomExerciseName');
+            const savedExerciseDesc = localStorage.getItem('randomExerciseDesc');
+            
+            if (savedExerciseName && savedExerciseDesc) {
+                randomExerciseName.textContent = savedExerciseName;
+                randomExerciseDesc.textContent = savedExerciseDesc;
+            } else {
+                changeRandomExercise();
+            }
+        }
+
+        // عرض التمارين في الأقسام المناسبة
+        function renderTasks() {
+            completedTasksElement.innerHTML = '';
+            pendingTasksElement.innerHTML = '';
+            
+            const completedTasks = fitnessTasks.filter(task => task.completed);
+            const pendingTasks = fitnessTasks.filter(task => !task.completed);
+            
+            // عرض التمارين المكتملة
+            if (completedTasks.length > 0) {
+                completedEmptyElement.style.display = 'none';
+                completedTasks.forEach(task => {
+                    const taskElement = createTaskElement(task, true);
+                    completedTasksElement.appendChild(taskElement);
+                });
+            } else {
+                completedEmptyElement.style.display = 'block';
+            }
+            
+            // عرض التمارين غير المكتملة
+            if (pendingTasks.length > 0) {
+                pendingEmptyElement.style.display = 'none';
+                pendingTasks.forEach(task => {
+                    const taskElement = createTaskElement(task, false);
+                    pendingTasksElement.appendChild(taskElement);
+                });
+            } else {
+                pendingEmptyElement.style.display = 'block';
+            }
+            
+            // حفظ البيانات
+            saveData();
+        }
+
+        // إنشاء عنصر تمرين
+        function createTaskElement(task, isCompleted) {
+            const taskElement = document.createElement('div');
+            taskElement.className = `task-card ${isCompleted ? 'completed' : ''}`;
+            taskElement.innerHTML = `
+                <h3>
+                    ${task.name}
+                    <button class="btn btn-delete" onclick="deleteTask(${task.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </h3>
+                <p>${task.description}</p>
+                <div class="task-actions">
+                    <span class="task-type">${getTypeName(task.type)}</span>
+                    <button class="btn ${isCompleted ? 'btn-incomplete' : 'btn-complete'}" 
+                            onclick="toggleTask(${task.id})">
+                        <i class="fas ${isCompleted ? 'fa-undo' : 'fa-check'}"></i>
+                        ${isCompleted ? 'تراجع' : 'إنجاز'}
+                    </button>
+                </div>
+            `;
+            return taskElement;
+        }
+
+        // الحصول على اسم نوع التمرين بالعربية
+        function getTypeName(type) {
+            const types = {
+                'strength': 'تمارين القوة',
+                'cardio': 'تمارين الكارديو',
+                'flexibility': 'تمارين المرونة',
+                'balance': 'تمارين التوازن',
+                'core': 'تمارين核心'
+            };
+            return types[type] || type;
+        }
+
+        // تبديل حالة إكمال التمرين
+        function toggleTask(taskId) {
+            const task = fitnessTasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks();
+                updateProgress();
+                
+                // إذا كانت جميع التمارين مكتملة، زيادة عداد السلسلة
+                if (fitnessTasks.every(t => t.completed)) {
+                    incrementStreak();
+                }
+            }
+        }
+
+        // حذف التمرين
+        function deleteTask(taskId) {
+            if (confirm('هل أنت متأكد من أنك تريد حذف هذا التمرين؟')) {
+                fitnessTasks = fitnessTasks.filter(task => task.id !== taskId);
+                renderTasks();
+                updateProgress();
+            }
+        }
+
+        // تحديث شريط التقدم
+        function updateProgress() {
+            const completedTasks = fitnessTasks.filter(task => task.completed).length;
+            const totalTasks = fitnessTasks.length;
+            const percentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            progressFillElement.style.width = `${percentage}%`;
+            progressTextElement.textContent = `${Math.round(percentage)}% مكتمل (${completedTasks}/${totalTasks} تمارين)`;
+        }
+
+        // إدارة سلسلة الإنجاز
+        function loadStreak() {
+            const streak = localStorage.getItem('fitnessStreak') || 0;
+            streakCountElement.textContent = streak;
+        }
+
+        function incrementStreak() {
+            let streak = parseInt(localStorage.getItem('fitnessStreak') || 0);
+            const lastCompletion = localStorage.getItem('lastCompletion');
+            const today = new Date().toDateString();
+            
+            // إذا كان الإكمال الأخير ليس اليوم، زيادة السلسلة
+            if (lastCompletion !== today) {
+                streak++;
+                localStorage.setItem('fitnessStreak', streak);
+                localStorage.setItem('lastCompletion', today);
+                streakCountElement.textContent = streak;
+                
+                if (streak % 5 === 0) {
+                    showNotification(`مبروك! لقد حافظت على سلسلة إنجاز لمدة ${streak} أيام متتالية! 🏆`, 'success');
+                }
+            }
+        }
+
+        // إضافة تمرين جديد
+        function addNewTask() {
+            const name = document.getElementById('task-name').value;
+            const description = document.getElementById('task-desc').value;
+            const type = document.getElementById('task-type').value;
+            
+            if (name && description) {
+                const newTask = {
+                    id: fitnessTasks.length > 0 ? Math.max(...fitnessTasks.map(t => t.id)) + 1 : 1,
+                    name: name,
+                    description: description,
+                    completed: false,
+                    type: type
+                };
+                
+                fitnessTasks.push(newTask);
+                renderTasks();
+                updateProgress();
+                
+                // مسح الحقول
+                document.getElementById('task-name').value = '';
+                document.getElementById('task-desc').value = '';
+                
+                // الانتقال إلى قسم التمارين قيد الإنجاز
+                switchTab('pending');
+                
+                showNotification('تم إضافة التمرين بنجاح!', 'success');
+            } else {
+                showNotification('يرجى ملء جميع الحقول', 'warning');
+            }
+        }
+
+        // تبديل بين علامات التبويب
+        function switchTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إلغاء تنشيط جميع الأزرار
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // تفعيل المحتوى المطلوب
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // تفعيل الزر المطلوب
+            document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+        }
+
+        // تغيير التمرين العشوائي
+        function changeRandomExercise() {
+            const randomIndex = Math.floor(Math.random() * randomExercises.length);
+            const exercise = randomExercises[randomIndex];
+            
+            randomExerciseName.textContent = exercise.name;
+            randomExerciseDesc.textContent = exercise.description;
+            
+            // حفظ التمرين الحالي
+            localStorage.setItem('randomExerciseName', exercise.name);
+            localStorage.setItem('randomExerciseDesc', exercise.description);
+            
+            // إرسال إشعار إذا كان مفعلاً
+            if (contactMethod) {
+                simulateNotification('تم تحديث التمرين العشوائي: ' + exercise.name);
+            }
+            
+            // إعادة ضبط المؤقت
+            setNextRandomTime();
+        }
+
+        // إضافة التمرين العشوائي إلى قائمة التمارين
+        function addRandomToTasks() {
+            const newTask = {
+                id: fitnessTasks.length > 0 ? Math.max(...fitnessTasks.map(t => t.id)) + 1 : 1,
+                name: randomExerciseName.textContent,
+                description: randomExerciseDesc.textContent,
+                completed: false,
+                type: randomExercises.find(e => e.name === randomExerciseName.textContent)?.type || "strength"
+            };
+            
+            fitnessTasks.push(newTask);
+            renderTasks();
+            updateProgress();
+            
+            showNotification('تم إضافة التمرين العشوائي إلى قائمة تمارينك!', 'success');
+        }
+
+        // ضبط الفترة الزمنية للتمارين العشوائية
+        function setRandomInterval(intervalType) {
+            randomIntervalType = intervalType;
+            
+            // تحديث حالة الأزرار
+            document.querySelectorAll('.random-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // إعادة تشغيل المؤقت
+            startRandomInterval();
+        }
+
+        // بدء المؤقت للتمارين العشوائية
+        function startRandomInterval() {
+            // إيقاف أي مؤقت سابق
+            if (randomInterval) {
+                clearInterval(randomInterval);
+            }
+            
+            // إذا كان التطبيق متوقفاً، لا نبدأ المؤقت
+            if (appState !== 'active') {
+                return;
+            }
+            
+            // تحديد الفترة بالمللي ثانية
+            let intervalMs;
+            switch (randomIntervalType) {
+                case 'minute':
+                    intervalMs = 60 * 1000; // دقيقة واحدة
+                    break;
+                case 'hour':
+                    intervalMs = 60 * 60 * 1000; // ساعة واحدة
+                    break;
+                case 'day':
+                    intervalMs = 24 * 60 * 60 * 1000; // يوم واحد
+                    break;
+                default:
+                    intervalMs = 60 * 1000;
+            }
+            
+            // بدء المؤقت
+            randomInterval = setInterval(changeRandomExercise, intervalMs);
+            
+            // ضبط وقت التمرين التالي
+            setNextRandomTime();
+            
+            // تحديث عداد الوقت كل ثانية
+            setInterval(updateNextRandomTimer, 1000);
+        }
+
+        // إيقاف التمارين العشوائية
+        function stopRandomExercise() {
+            if (randomInterval) {
+                clearInterval(randomInterval);
+                randomInterval = null;
+                nextRandomTimer.textContent = "مؤقت التمارين متوقف";
+                
+                // تحديث حالة الأزرار
+                document.querySelectorAll('.random-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+        }
+
+        // ضبط وقت التمرين العشوائي التالي
+        function setNextRandomTime() {
+            let intervalMs;
+            switch (randomIntervalType) {
+                case 'minute':
+                    intervalMs = 60 * 1000;
+                    break;
+                case 'hour':
+                    intervalMs = 60 * 60 * 1000;
+                    break;
+                case 'day':
+                    intervalMs = 24 * 60 * 60 * 1000;
+                    break;
+                default:
+                    intervalMs = 60 * 1000;
+            }
+            
+            nextRandomTime = new Date(Date.now() + intervalMs);
+            localStorage.setItem('nextRandomTime', nextRandomTime.getTime());
+        }
+
+        // تحديث عداد الوقت للتمرين العشوائي التالي
+        function updateNextRandomTimer() {
+            if (!nextRandomTime) return;
+            
+            const now = new Date();
+            const timeLeft = nextRandomTime - now;
+            
+            if (timeLeft <= 0) {
+                changeRandomExercise();
+                return;
+            }
+            
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            nextRandomTimer.textContent = `التالي: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>

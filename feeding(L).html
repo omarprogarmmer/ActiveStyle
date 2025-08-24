@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تغذية اللياقة | FitNutrition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6fbff; --card:#ffffff; --text:#0b132b; --muted:#6c7a92;
+      --primary:#4dabf7; --primary-600:#339af0; --accent:#38d9a9; --danger:#ff6b6b;
+      --shadow: 0 10px 30px rgba(13, 45, 86, .08); --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid #e9f2fb}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#74c0fc);display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    .links{display:flex;flex-wrap:wrap;gap:8px}
+    .links a{padding:10px 14px;border-radius:12px;color:#1c2e4a}
+    .links a:hover{background:#eef6ff}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+    .hero-card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    h1{margin:0 0 10px 0;font-size:34px}
+    .muted{color:var(--muted)}
+    .cta{display:flex;gap:10px;margin-top:16px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+    .btn.secondary{background:#ecf7ff;color:#1c2e4a}
+    .btn:active{transform:translateY(1px)}
+    section{margin:28px 0}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px 0}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;background:#eef6ff;color:#1c2e4a}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kpi .item{background:#f2fbf7;border:1px dashed #b2f2bb;border-radius:14px;padding:10px;text-align:center}
+    .input-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    label{font-weight:700;font-size:14px}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #dbe7f3;border-radius:12px;background:#fff}
+    textarea{min-height:80px}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    td,th{padding:10px;background:#fff}
+    th{background:#f1f7ff}
+    tr{box-shadow:var(--shadow);border-radius:12px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#f1f7ff;font-size:12px}
+    .footer{margin-top:40px;padding:40px 0;color:#4c6a85;text-align:center}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid-4,.grid-3,.cards{grid-template-columns:1fr 1fr}.kpi{grid-template-columns:1fr 1fr 1fr}}
+    @media (max-width:650px){.links{display:none}.grid-4,.grid-3,.cards,.grid-2{grid-template-columns:1fr}.input-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo">🏋️</div> FitNutrition</div>
+      <nav class="links">
+        <a href="#home">الرئيسية</a>
+        <a href="#plans">الخطط</a>
+        <a href="#recipes">الوصفات</a>
+        <a href="#calc">حاسبة</a>
+        <a href="#supps">المكملات</a>
+        <a href="#water">الترطيب</a>
+        <a href="#week">الخطة الأسبوعية</a>
+        <a href="#articles">مقالات</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-card">
+        <h1>مرحباً 👋 جاهز لتغذية جسمك ورفع لياقتك؟</h1>
+        <p class="muted">كل ما تحتاجه عن تغذية الرياضيين في مكان واحد: خطط، وصفات، مكملات، وحاسبات دقيقة.</p>
+        <div class="cta">
+          <a class="btn" href="#calc">ابدأ بحساب السعرات</a>
+          <a class="btn secondary" href="#plans">شاهد الخطط</a>
+        </div>
+        <div class="kpi" style="margin-top:14px">
+          <div class="item"><div style="font-weight:800">+100</div><div class="muted">وصفة صحية ورياضية</div></div>
+          <div class="item"><div style="font-weight:800">3</div><div class="muted">أهداف تغذوية رئيسية</div></div>
+          <div class="item"><div style="font-weight:800">100%</div><div class="muted">يدعم اللغة العربية</div></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img alt="طبق صحي" src="https://images.unsplash.com/photo-1556911073-52527ac437f3?q=80&w=1200&auto=format&fit=crop" style="width:100%;height:auto;border-radius:16px"/>
+      </div>
+    </section>
+
+    <!-- PLANS -->
+    <section id="plans">
+      <div class="section-title">
+        <h2>🥗 خطط التغذية حسب الهدف الرياضي</h2>
+        <span class="badge">قابل للتخصيص</span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>زيادة الكتلة (Bulking)</h3>
+          <p class="muted">+10–20% فوق احتياجك الحراري. بروتين 1.8–2.2 غ/كغ، دهون 0.8–1 غ/كغ، والباقي كارب.</p>
+          <ul>
+            <li>6 وجبات/اليوم (3 رئيسية + 3 خفيفة)</li>
+            <li>كارب معقد (أرز، شوفان، بطاطا)</li>
+            <li>أولوية للنوم والترطيب</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>التنشيف (Cutting)</h3>
+          <p class="muted">-10–20% تحت الاحتياج. حافظ على بروتين مرتفع لتقليل الفاقد العضلي.</p>
+          <ul>
+            <li>خضار وألياف عالية للشبع</li>
+            <li>تقليل السكريات السريعة</li>
+            <li>تمارين مقاومة + كارديو معتدل</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الحفاظ (Maintenance)</h3>
+          <p class="muted">سعرات مساوية للاحتياج للحفاظ على الوزن والأداء.</p>
+          <ul>
+            <li>توازن ماكروز 30/45/25 (بروتين/كارب/دهون)</li>
+            <li>مرونة مع 80/20 قاعدة الأطعمة</li>
+            <li>تتبع أسبوعي للوزن</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECIPES -->
+    <section id="recipes">
+      <div class="section-title">
+        <h2>🍽️ وصفات صحية للرياضيين</h2>
+        <div>
+          <select id="recipeFilter">
+            <option value="all">الكل</option>
+            <option value="breakfast">فطور</option>
+            <option value="lunch">غداء</option>
+            <option value="dinner">عشاء</option>
+            <option value="snack">سناك</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-3" id="recipesGrid"></div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calc">
+      <div class="section-title">
+        <h2>📊 حاسبة السعرات والماكروز</h2>
+        <span class="badge">Mifflin–St Jeor + نشاط</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <form id="calcForm">
+            <div class="input-row">
+              <div>
+                <label>الوزن (كغ)</label>
+                <input type="number" id="weight" required>
+              </div>
+              <div>
+                <label>الطول (سم)</label>
+                <input type="number" id="height" required>
+              </div>
+            </div>
+            <div class="input-row">
+              <div>
+                <label>العمر</label>
+                <input type="number" id="age" required>
+              </div>
+              <div>
+                <label>الجنس</label>
+                <select id="gender">
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>مستوى النشاط</label>
+              <select id="activity">
+                <option value="1.2">خامل</option>
+                <option value="1.375">خفيف</option>
+                <option value="1.55">متوسط</option>
+                <option value="1.725">نشط</option>
+                <option value="1.9">نشط جداً</option>
+              </select>
+            </div>
+            <div>
+              <label>هدفك</label>
+              <select id="goal">
+                <option value="maintain">الحفاظ على الوزن</option>
+                <option value="bulk">زيادة الكتلة</option>
+                <option value="cut">التنشيف</option>
+              </select>
+            </div>
+            <button type="submit" class="btn">احسب السعرات</button>
+          </form>
+        </div>
+        <div class="card" id="calcResult">
+          <h3>نتيجة الحاسبة</h3>
+          <p class="muted">ادخل بياناتك واضغط احسب</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPLEMENTS -->
+    <section id="supps">
+      <div class="section-title">
+        <h2>💊 المكملات الغذائية الشائعة</h2>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>بروتين مصل اللبن Whey Protein</h3>
+          <p class="muted">مصدر سريع للبروتين بعد التمرين. 20–30غ لكل حصة.</p>
+        </div>
+        <div class="card">
+          <h3>كرياتين Creatine</h3>
+          <p class="muted">يدعم القوة وكتلة العضلات. 3–5غ يومياً.</p>
+        </div>
+        <div class="card">
+          <h3>أوميغا 3 Omega-3</h3>
+          <p class="muted">دعم القلب والمفاصل. 1–3غ يومياً.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WATER -->
+    <section id="water">
+      <div class="section-title"><h2>💧 الترطيب اليومي</h2></div>
+      <div class="card">
+        <p>ينصح بشرب حوالي <strong>35–40 مل/كغ وزن الجسم</strong> يومياً. مثال: وزن 70 كغ = حوالي 2.5–3 لتر ماء.</p>
+      </div>
+    </section>
+
+    <!-- WEEKLY PLAN -->
+   <section id="week">
+  <div class="section-title"><h2>📅 الخطة الأسبوعية للوجبات</h2></div>
+  <div class="card">
+    <table id="weekPlan">
+      <tr><th>اليوم</th><th>فطور</th><th>غداء</th><th>عشاء</th></tr>
+      <tr><td>السبت</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الأحد</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الإثنين</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الثلاثاء</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الأربعاء</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الخميس</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+      <tr><td>الجمعة</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+    </table>
+    <button id="saveWeek" class="btn" style="margin-top:12px;">💾 حفظ التغييرات</button>
+  </div>
+</section>
+
+<script>
+  // حفظ التعديلات على خطة الأسبوع في localStorage
+  const saveWeekBtn = document.getElementById("saveWeek");
+  const weekTable = document.getElementById("weekPlan");
+
+  // تحميل البيانات المخزنة عند فتح الصفحة
+  window.addEventListener("load",()=>{
+    const stored = localStorage.getItem("weekPlan");
+    if(stored){
+      const data = JSON.parse(stored);
+      for(let r=1; r<weekTable.rows.length; r++){
+        for(let c=1; c<weekTable.rows[r].cells.length; c++){
+          weekTable.rows[r].cells[c].innerText = data[r-1][c-1];
+        }
+      }
+    }
+  });
+
+  // حفظ البيانات عند الضغط على الزر
+  saveWeekBtn.addEventListener("click",()=>{
+    const data=[];
+    for(let r=1; r<weekTable.rows.length; r++){
+      const rowData=[];
+      for(let c=1; c<weekTable.rows[r].cells.length; c++){
+        rowData.push(weekTable.rows[r].cells[c].innerText);
+      }
+      data.push(rowData);
+    }
+    localStorage.setItem("weekPlan",JSON.stringify(data));
+    alert("تم حفظ خطة الأسبوع بنجاح ✅");
+  });
+</script>
+
+
+</body>
+</html>

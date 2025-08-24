@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تغذية كمال الأجسام | LifeFit Nutrition</title>
+  <meta name="description" content="موقع ويب شامل لتغذية كمال الأجسام: خطط، وصفات، حاسبة سعرات وماكروز، مكملات، ترطيب، خطة أسبوعية، مقالات، وملف شخصي." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6fbff;           /* خلفية هادئة */
+      --card:#ffffff;         /* كروت */
+      --text:#0b132b;         /* نص داكن */
+      --muted:#6c7a92;        /* نص ثانوي */
+      --primary:#4dabf7;      /* أزرق سماوي */
+      --primary-600:#339af0;  /* أزرق أعمق للأزرار */
+      --accent:#38d9a9;       /* أخضر ناعم */
+      --danger:#ff6b6b;       /* تحذير */
+      --shadow: 0 10px 30px rgba(13, 45, 86, .08);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid #e9f2fb}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#74c0fc);display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    .links{display:flex;flex-wrap:wrap;gap:8px}
+    .links a{padding:10px 14px;border-radius:12px;color:#1c2e4a}
+    .links a:hover{background:#eef6ff}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+    .hero-card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    h1{margin:0 0 10px 0;font-size:34px}
+    .muted{color:var(--muted)}
+    .cta{display:flex;gap:10px;margin-top:16px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+    .btn.secondary{background:#ecf7ff;color:#1c2e4a}
+    .btn:active{transform:translateY(1px)}
+    section{margin:28px 0}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px 0}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;background:#eef6ff;color:#1c2e4a}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kpi .item{background:#f2fbf7;border:1px dashed #b2f2bb;border-radius:14px;padding:10px;text-align:center}
+    .input-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    label{font-weight:700;font-size:14px}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #dbe7f3;border-radius:12px;background:#fff}
+    textarea{min-height:80px}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    td,th{padding:10px;background:#fff}
+    th{background:#f1f7ff}
+    tr{box-shadow:var(--shadow);border-radius:12px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#f1f7ff;font-size:12px}
+    .footer{margin-top:40px;padding:40px 0;color:#4c6a85;text-align:center}
+
+    /* Responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid-4,.grid-3,.cards{grid-template-columns:1fr 1fr}.kpi{grid-template-columns:1fr 1fr 1fr}}
+    @media (max-width:650px){.links{display:none}.grid-4,.grid-3,.cards,.grid-2{grid-template-columns:1fr}.input-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo">🏋️</div> LifeFit Nutrition</div>
+      <nav class="links">
+        <a href="#home">الرئيسية</a>
+        <a href="#plans">الخطط</a>
+        <a href="#recipes">الوصفات</a>
+        <a href="#calc">حاسبة</a>
+        <a href="#supps">المكملات</a>
+        <a href="#water">الترطيب</a>
+        <a href="#week">الخطة الأسبوعية</a>
+        <a href="#articles">مقالات</a>
+        <a href="#profile">الملف الشخصي</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-card">
+        <h1>مرحباً 👋 جاهز تبني جسم أحلامك؟</h1>
+        <p class="muted">كل ما تحتاجه عن تغذية كمال الأجسام في مكان واحد: خطط، وصفات، حاسبات دقيقة، ومتابعة تقدمك.</p>
+        <div class="cta">
+          <a class="btn" href="#calc">ابدأ بحساب السعرات</a>
+          <a class="btn secondary" href="#plans">شاهد الخطط</a>
+        </div>
+        <div class="kpi" style="margin-top:14px">
+          <div class="item"><div style="font-weight:800">+150</div><div class="muted">وصفة عالية البروتين</div></div>
+          <div class="item"><div style="font-weight:800">3</div><div class="muted">أهداف تغذوية رئيسية</div></div>
+          <div class="item"><div style="font-weight:800">100%</div><div class="muted">يدعم اللغة العربية</div></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img alt="طبق صحي" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop" style="width:100%;height:auto;border-radius:16px"/>
+      </div>
+    </section>
+
+    <!-- PLANS -->
+    <section id="plans">
+      <div class="section-title">
+        <h2>🥗 خطط التغذية حسب الهدف</h2>
+        <span class="badge">قابل للتخصيص</span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>زيادة الكتلة (Bulking)</h3>
+          <p class="muted">+10–20% فوق احتياجك الحراري. بروتين 1.8–2.2 غ/كغ، دهون 0.8–1 غ/كغ، والباقي كارب.</p>
+          <ul>
+            <li>6 وجبات/اليوم (3 رئيسية + 3 خفيفة)</li>
+            <li>كارب معقد (أرز، شوفان، بطاطا)</li>
+            <li>أولوية للنوم والترطيب</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>التنشيف (Cutting)</h3>
+          <p class="muted">-10–20% تحت الاحتياج. حافظ على بروتين مرتفع لتقليل الفاقد العضلي.</p>
+          <ul>
+            <li>خضار وألياف عالية للشبع</li>
+            <li>تقليل السكريات السريعة</li>
+            <li>تمارين مقاومة + كارديو معتدل</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الحفاظ (Maintenance)</h3>
+          <p class="muted">سعرات مساوية للاحتياج للحفاظ على الوزن والأداء.</p>
+          <ul>
+            <li>توازن ماكروز 30/45/25 (بروتين/كارب/دهون)</li>
+            <li>مرونة مع 80/20 قاعدة الأطعمة</li>
+            <li>تتبع أسبوعي للوزن</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECIPES -->
+    <section id="recipes">
+      <div class="section-title">
+        <h2>🍽️ وصفات عالية البروتين</h2>
+        <div>
+          <select id="recipeFilter">
+            <option value="all">الكل</option>
+            <option value="breakfast">فطور</option>
+            <option value="lunch">غداء</option>
+            <option value="dinner">عشاء</option>
+            <option value="snack">سناك</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-3" id="recipesGrid"></div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calc">
+      <div class="section-title">
+        <h2>📊 حاسبة السعرات والماكروز</h2>
+        <span class="badge">Mifflin–St Jeor + نشاط</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <form id="calcForm">
+            <div class="input-row">
+              <div>
+                <label>الجنس</label>
+                <select id="gender" required>
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+              </div>
+              <div>
+                <label>العمر (سنة)</label>
+                <input type="number" id="age" min="10" max="100" value="25" required />
+              </div>
+            </div>
+            <div class="input-row">
+              <div>
+                <label>الطول (سم)</label>
+                <input type="number" id="height" min="120" max="230" value="175" required />
+              </div>
+              <div>
+                <label>الوزن (كغ)</label>
+                <input type="number" id="weight" min="30" max="250" value="75" required />
+              </div>
+            </div>
+            <div class="input-row">
+              <div>
+                <label>مستوى النشاط</label>
+                <select id="activity" required>
+                  <option value="1.2">خامل (بدون تمرين)</option>
+                  <option value="1.375">خفيف (1–3 أيام/أسبوع)</option>
+                  <option value="1.55" selected>متوسط (3–5 أيام/أسبوع)</option>
+                  <option value="1.725">عالٍ (6–7 أيام/أسبوع)</option>
+                  <option value="1.9">شديد جداً (عمل بدني)</option>
+                </select>
+              </div>
+              <div>
+                <label>الهدف</label>
+                <select id="goal" required>
+                  <option value="maintain">حفاظ</option>
+                  <option value="cut">تنشيف (-15%)</option>
+                  <option value="bulk">زيادة (+15%)</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row">
+              <div>
+                <label>بروتين مستهدف (غ/كغ)</label>
+                <input type="number" id="proteinPerKg" min="1.2" max="2.6" step="0.1" value="2.0" />
+              </div>
+              <div>
+                <label>دهون مستهدفة (غ/كغ)</label>
+                <input type="number" id="fatPerKg" min="0.5" max="1.2" step="0.1" value="0.9" />
+              </div>
+            </div>
+            <button class="btn" type="submit">احسب الآن</button>
+            <button class="btn secondary" type="button" id="saveProfileBtn">حفظ للملف الشخصي</button>
+          </form>
+        </div>
+        <div class="card" id="calcResult">
+          <h3>النتيجة</h3>
+          <p class="muted">أدخل بياناتك ثم اضغط "احسب الآن".</p>
+          <div id="resultContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPLEMENTS -->
+    <section id="supps">
+      <div class="section-title">
+        <h2>💊 المكملات الشائعة</h2>
+        <span class="badge">اختياري وليست بديل للطعام</span>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Whey Protein</h3>
+          <p class="muted">سهل وسريع الامتصاص لرفع إجمالي البروتين اليومي.</p>
+          <span class="pill">20–40 غ بعد التمرين/ضمن اليوم</span>
+        </div>
+        <div class="card">
+          <h3>Creatine Monohydrate</h3>
+          <p class="muted">أفضل المكملات المدروسة لزيادة القوة والأداء.</p>
+          <span class="pill">3–5 غ يومياً</span>
+        </div>
+        <div class="card">
+          <h3>Omega-3</h3>
+          <p class="muted">دعم للصحة العامة والالتهابات.</p>
+          <span class="pill">1–2 غ EPA/DHA يومياً</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HYDRATION -->
+    <section id="water">
+      <div class="section-title">
+        <h2>🥤 الترطيب</h2>
+        <span class="badge">قاعدة عامة</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <p class="muted">القاعدة: <strong>35 مل لكل كغ</strong> من وزنك + <strong>500 مل لكل ساعة تمرين</strong>.</p>
+          <div class="input-row">
+            <div>
+              <label>وزنك (كغ)</label>
+              <input type="number" id="waterWeight" value="75" />
+            </div>
+            <div>
+              <label>ساعات التمرين اليوم</label>
+              <input type="number" id="waterHours" value="1" step="0.5" />
+            </div>
+          </div>
+          <button class="btn" id="calcWaterBtn">احسب الماء</button>
+        </div>
+        <div class="card">
+          <h3>احتياجك اليومي</h3>
+          <div id="waterResult" class="muted">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEEK PLAN -->
+    <section id="week">
+      <div class="section-title">
+        <h2>📅 الخطة الأسبوعية للوجبات</h2>
+        <div>
+          <button class="btn secondary" id="clearWeekBtn">مسح الخطة</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>اليوم</th>
+                <th>الوجبات (مثال)</th>
+              </tr>
+            </thead>
+            <tbody id="weekTable"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>نصائح للتنظيم</h3>
+          <ul>
+            <li>حضّر البروتين الأساسي للأسبوع (دجاج/لحم/تونة).</li>
+            <li>قسّم الكارب (أرز/بطاطا/شوفان) في علب.</li>
+            <li>أضف خضار جاهزة للأكل لرفع الألياف.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTICLES -->
+    <section id="articles">
+      <div class="section-title">
+        <h2>📚 مقالات ونصائح</h2>
+        <span class="badge">مختصرة</span>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>قبل التمرين ⏱️</h3><p class="muted">وجبة خفيفة قبل 60–90 دقيقة: كارب سهل + بروتين (موز + زبادي/واي).</p></div>
+        <div class="card"><h3>بعد التمرين 💪</h3><p class="muted">20–40 غ بروتين + كارب لإعادة ملء الجليكوجين.</p></div>
+        <div class="card"><h3>أخطاء شائعة ⚠️</h3><p class="muted">الاعتماد على المكملات، قلة النوم، تجاهل الألياف والخضار.</p></div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <!-- <section id="profile">
+      <div class="section-title">
+        <h2>👤 الملف الشخصي</h2>
+        <span class="badge">محفوظ محلياً على جهازك</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <form id="profileForm">
+            <div class="input-row">
+              <div>
+                <label>الاسم</label>
+                <input id="pname" placeholder="اسمك" />
+              </div>
+              <div>
+                <label>الهدف</label>
+                <select id="pgoal">
+                  <option value="maintain">حفاظ</option>
+                  <option value="cut">تنشيف</option>
+                  <option value="bulk">زيادة</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row">
+              <div>
+                <label>الطول (سم)</label>
+                <input id="pheight" type="number" />
+              </div>
+              <div>
+                <label>الوزن (كغ)</label>
+                <input id="pweight" type="number" />
+              </div>
+            </div>
+            <button class="btn" type="submit">حفظ الملف</button>
+          </form>
+        </div>
+        <div class="card">
+          <h3>بياناتك</h3>
+          <div id="profileView" class="muted">لا توجد بيانات بعد.</div>
+        </div>
+      </div>
+    </section> -->
+
+    <footer class="footer">
+      صنع بحب 🩵 — هذا الملف يعمل بدون إنترنت ويمكن حفظه وتشغيله محلياً.
+    </footer>
+  </main>
+
+  <script>
+    // ————— بيانات مبدئية للوصفات —————
+    const RECIPES = [
+      { id:1, type:'breakfast', title:'أومليت بروتين بالشوفان', kcal:420, p:38, c:36, f:14, steps:'اخلط بياض بيض + شوفان + ملح وفلفل، اطبخ على نار متوسطة.' },
+      { id:2, type:'lunch',     title:'أرز ودجاج مشوي',         kcal:650, p:45, c:80, f:15, steps:'تبّل الدجاج واشويه، قدّم مع أرز وخضار.' },
+      { id:3, type:'dinner',    title:'تونة مع بطاطا مسلوقة',   kcal:520, p:40, c:55, f:12, steps:'اخلط التونة مع قليل زيت زيتون وقدّم مع البطاطا.' },
+      { id:4, type:'snack',     title:'زبادي يوناني وعسل',      kcal:220, p:20, c:26, f:4,  steps:'اخلط الزبادي مع قليل عسل ومكسرات.' },
+      { id:5, type:'breakfast', title:'بان كيك الشوفان والواي',  kcal:480, p:42, c:50, f:12, steps:'اخفق الشوفان والبيض وبودرة الواي واقلِ على صاج.' },
+      { id:6, type:'lunch',     title:'مكرونة تيركي',           kcal:700, p:48, c:90, f:18, steps:'اسلق المكرونة واطبخ التيركي المفروم بصلصة طماطم.' }
+    ];
+
+    function renderRecipes(filter='all'){
+      const grid = document.getElementById('recipesGrid');
+      grid.innerHTML = '';
+      RECIPES.filter(r=> filter==='all' ? true : r.type===filter)
+        .forEach(r=>{
+          const el = document.createElement('div');
+          el.className = 'card';
+          el.innerHTML = `
+            <div class="pill" style="margin-bottom:8px">${labelType(r.type)}</div>
+            <h3>${r.title}</h3>
+            <p class="muted">${r.kcal} كالوري • بروتين ${r.p}غ • كارب ${r.c}غ • دهون ${r.f}غ</p>
+            <details style="margin-top:8px"><summary>خطوات التحضير</summary><p class="muted">${r.steps}</p></details>
+          `;
+          grid.appendChild(el);
+        });
+    }
+    function labelType(t){
+      return {breakfast:'فطور',lunch:'غداء',dinner:'عشاء',snack:'سناك'}[t] || t;
+    }
+
+    document.getElementById('recipeFilter').addEventListener('change', e=>{
+      renderRecipes(e.target.value);
+    });
+
+    // ————— الحاسبة —————
+    function mifflin({gender, age, height, weight}){
+      // BMR (kcal/day)
+      return gender==='male' ? (10*weight + 6.25*height - 5*age + 5)
+                             : (10*weight + 6.25*height - 5*age - 161);
+    }
+
+    function calcMacros(){
+      const gender = document.getElementById('gender').value;
+      const age    = parseFloat(document.getElementById('age').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const activity = parseFloat(document.getElementById('activity').value);
+      const goal = document.getElementById('goal').value; // maintain|cut|bulk
+      const proteinPerKg = parseFloat(document.getElementById('proteinPerKg').value);
+      const fatPerKg = parseFloat(document.getElementById('fatPerKg').value);
+
+      if([age,height,weight].some(isNaN)) return;
+
+      const bmr = mifflin({gender, age, height, weight});
+      let tdee = bmr * activity;
+      if(goal==='cut') tdee *= 0.85; // -15%
+      if(goal==='bulk') tdee *= 1.15; // +15%
+
+      const proteinG = Math.round(proteinPerKg * weight);
+      const fatG = Math.round(fatPerKg * weight);
+      const proteinKcal = proteinG * 4;
+      const fatKcal = fatG * 9;
+      const remainingKcal = Math.max(0, Math.round(tdee - proteinKcal - fatKcal));
+      const carbsG = Math.round(remainingKcal / 4);
+
+      return {
+        bmr: Math.round(bmr),
+        tdee: Math.round(tdee),
+        proteinG, fatG, carbsG,
+        proteinKcal, fatKcal, remainingKcal
+      };
+    }
+
+    document.getElementById('calcForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const res = calcMacros();
+      const box = document.getElementById('resultContent');
+      if(!res){ box.innerHTML = '<p class="muted">تأكد من إدخال القيم بشكل صحيح.</p>'; return; }
+      box.innerHTML = `
+        <div class="grid-3">
+          <div class="card"><strong>BMR</strong><div class="muted">${res.bmr} كالوري</div></div>
+          <div class="card"><strong>الاحتياج اليومي</strong><div class="muted">${res.tdee} كالوري</div></div>
+          <div class="card"><strong>المتبقي للكارب</strong><div class="muted">${res.remainingKcal} كالوري</div></div>
+        </div>
+        <div class="cards" style="margin-top:10px">
+          <div class="card"><h4>بروتين</h4><div class="muted">${res.proteinG} غ (~${res.proteinKcal} كالوري)</div></div>
+          <div class="card"><h4>دهون</h4><div class="muted">${res.fatG} غ (~${res.fatKcal} كالوري)</div></div>
+          <div class="card"><h4>كربوهيدرات</h4><div class="muted">${res.carbsG} غ</div></div>
+        </div>
+      `;
+    });
+
+    // ————— الترطيب —————
+    document.getElementById('calcWaterBtn').addEventListener('click', ()=>{
+      const w = parseFloat(document.getElementById('waterWeight').value||0);
+      const h = parseFloat(document.getElementById('waterHours').value||0);
+      const ml = Math.round(w*35 + h*500);
+      const liters = (ml/1000).toFixed(2);
+      document.getElementById('waterResult').innerHTML = `${liters} لتر / يوم <span class="muted">(${ml} مل)</span>`;
+    });
+
+    // ————— الأسبوع —————
+    const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+    const weekKey = 'lifefit.weekplan.v1';
+
+    function defaultMeals(day){
+      return {
+        breakfast:'شوفان + لبن + موز',
+        lunch:'أرز + دجاج + سلطة',
+        dinner:'تونة + بطاطا + خضار',
+        snacks:'مكسرات + فواكه + زبادي'
+      };
+    }
+
+    function loadWeek(){
+      const saved = JSON.parse(localStorage.getItem(weekKey)||'{}');
+      const tbody = document.getElementById('weekTable');
+      tbody.innerHTML = '';
+      DAYS.forEach((d,i)=>{
+        const data = saved[d] || defaultMeals(d);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${d}</strong></td>
+          <td>
+            <div class="input-row" style="margin-bottom:6px">
+              <div><label>فطور</label><input data-day="${d}" data-key="breakfast" value="${data.breakfast}"/></div>
+              <div><label>غداء</label><input data-day="${d}" data-key="lunch" value="${data.lunch}"/></div>
+            </div>
+            <div class="input-row">
+              <div><label>عشاء</label><input data-day="${d}" data-key="dinner" value="${data.dinner}"/></div>
+              <div><label>سناك</label><input data-day="${d}" data-key="snacks" value="${data.snacks}"/></div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      tbody.querySelectorAll('input').forEach(inp=>{
+        inp.addEventListener('change', onWeekChange);
+      });
+    }
+
+    function onWeekChange(e){
+      const day = e.target.getAttribute('data-day');
+      const key = e.target.getAttribute('data-key');
+      const saved = JSON.parse(localStorage.getItem(weekKey)||'{}');
+      saved[day] = saved[day] || defaultMeals(day);
+      saved[day][key] = e.target.value;
+      localStorage.setItem(weekKey, JSON.stringify(saved));
+    }
+
+    document.getElementById('clearWeekBtn').addEventListener('click', ()=>{
+      if(confirm('مسح الخطة الأسبوعية المحفوظة؟')){
+        localStorage.removeItem(weekKey);
+        loadWeek();
+      }
+    });
+
+    // ————— الملف الشخصي —————
+    // const profileKey = 'lifefit.profile.v1';
+
+    // function saveProfile(obj){
+    //   localStorage.setItem(profileKey, JSON.stringify(obj));
+    //   renderProfile();
+    // }
+    // function getProfile(){
+    //   try { return JSON.parse(localStorage.getItem(profileKey)||'{}'); } catch { return {}; }
+    // }
+    // function renderProfile(){
+    //   const p = getProfile();
+    //   const box = document.getElementById('profileView');
+    //   if(!p || Object.keys(p).length===0){ box.textContent = 'لا توجد بيانات بعد.'; return; }
+    //   box.innerHTML = `
+    //     <div class="grid-2">
+    //       <div class="card"><strong>الاسم</strong><div class="muted">${p.name||'-'}</div></div>
+    //       <div class="card"><strong>الهدف</strong><div class="muted">${goalLabel(p.goal)||'-'}</div></div>
+    //       <div class="card"><strong>الطول</strong><div class="muted">${p.height||'-'} سم</div></div>
+    //       <div class="card"><strong>الوزن</strong><div class="muted">${p.weight||'-'} كغ</div></div>
+    //     </div>`;
+    //   // تعبئة حقول النموذج
+    //   document.getElementById('pname').value = p.name||'';
+    //   document.getElementById('pgoal').value = p.goal||'maintain';
+    //   document.getElementById('pheight').value = p.height||'';
+    //   document.getElementById('pweight').value = p.weight||'';
+    // }
+    // function goalLabel(g){ return g==='cut'? 'تنشيف' : g==='bulk'? 'زيادة' : 'حفاظ'; }
+
+    // document.getElementById('profileForm').addEventListener('submit', (e)=>{
+    //   e.preventDefault();
+    //   const payload = {
+    //     name: document.getElementById('pname').value.trim(),
+    //     goal: document.getElementById('pgoal').value,
+    //     height: parseFloat(document.getElementById('pheight').value||0),
+    //     weight: parseFloat(document.getElementById('pweight').value||0)
+    //   };
+    //   saveProfile(payload);
+    //   alert('تم حفظ الملف الشخصي بنجاح ✅');
+    // });
+
+    // // زر حفظ من الحاسبة إلى الملف الشخصي
+    // document.getElementById('saveProfileBtn').addEventListener('click', ()=>{
+    //   const payload = {
+    //     name: getProfile().name || '',
+    //     goal: document.getElementById('goal').value,
+    //     height: parseFloat(document.getElementById('height').value||0),
+    //     weight: parseFloat(document.getElementById('weight').value||0)
+    //   };
+    //   saveProfile(payload);
+    //   alert('تم حفظ بياناتك من الحاسبة إلى الملف الشخصي ✅');
+    // });
+
+    // ————— تهيئة الصفحة —————
+    function init(){
+      renderRecipes('all');
+      loadWeek();
+      renderProfile();
+    }
+    init();
+  </script>
+</body>
+</html>
