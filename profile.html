@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف شخصي - لياقة بدنية وكمال أجسام</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --fitness-color: #9b59b6;
+            --bodybuilding-color: #f39c12;
+            --progress-color: #2ecc71;
+            --calories-color: #e67e22;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .edit-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-bottom: 15px;
+            object-fit: cover;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #777;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .change-img {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .profile-info {
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 30px;
+            padding: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(to bottom right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .stat-box .edit-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .stat-box .edit-icon:hover {
+            opacity: 1;
+        }
+        
+        .stat-box h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-box p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .measurements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .measurement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .measurement-item:last-child {
+            border-bottom: none;
+        }
+        
+        .measurement-value {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-section {
+            margin-top: 20px;
+        }
+        
+        .progress-item {
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        .bodybuilding .progress-fill {
+            background: linear-gradient(to right, var(--bodybuilding-color), #e67e22);
+        }
+        
+        .fitness .progress-fill {
+            background: linear-gradient(to right, var(--fitness-color), #8e44ad);
+        }
+        
+        .progress .progress-fill {
+            background: linear-gradient(to right, var(--progress-color), #27ae60);
+        }
+        
+        .calories .progress-fill {
+            background: linear-gradient(to right, var(--calories-color), #d35400);
+        }
+        
+        .weight-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .weight-history {
+            margin-top: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--light-color);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: #95a5a6;
+        }
+        
+        .save-btn {
+            background-color: var(--primary-color);
+        }
+        
+        .fitness-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .fitness-stat {
+            background: linear-gradient(to bottom right, var(--fitness-color), #8e44ad);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .fitness-stat h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .fitness-stat p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .stats, .fitness-stats, .progress-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .weight-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .measurements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats, .fitness-stats, .progress-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .edit-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <button class="edit-btn" onclick="openEditModal('profile')">
+                <i class="fas fa-edit"></i> تعديل الملف الشخصي
+            </button>
+            <div class="profile-header">
+                <div class="profile-img">
+                    <i class="fas fa-user"></i>
+                    <div class="change-img" onclick="changeImage()">
+                        <i class="fas fa-camera"></i> تغيير
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h1>أحمد محمد</h1>
+                    <p>لاعب كمال أجسام ولياقة بدنية</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('bodybuilding')">
+                <i class="fas fa-dumbbell"></i> كمال الأجسام
+            </button>
+            <button class="tab-btn" onclick="openTab('fitness')">
+                <i class="fas fa-running"></i> اللياقة البدنية
+            </button>
+            <button class="tab-btn" onclick="openTab('weight')">
+                <i class="fas fa-weight"></i> متابعة الوزن
+            </button>
+        </div>
+        
+        <div id="bodybuilding" class="tab-content active">
+            <div class="stats">
+                <div class="stat-box">
+                    <i class="fas fa-edit edit-icon" onclick="openEditModal('weight')"></i>
+                    <h4>الوزن الحالي</h4>
+                    <p>85 كغ</p>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-edit edit-icon" onclick="openEditModal('muscle')"></i>
+                    <h4>كتلة العضلات</h4>
+                    <p>72%</p>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-edit edit-icon" onclick="openEditModal('fat')"></i>
+                    <h4>نسبة الدهون</h4>
+                    <p>15%</p>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-edit edit-icon" onclick="openEditModal('bmi')"></i>
+                    <h4>مؤشر كتلة الجسم</h4>
+                    <p>26.2</p>
+                </div>
+            </div>
+            
+            <div class="progress-stats">
+                <div class="progress-card">
+                    <h3><i class="fas fa-chart-line"></i> معدل التقدم في القوة</h3>
+                    <div class="progress-section">
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>رفع الأثقال</span>
+                                <span>+15%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>تمرين البنش</span>
+                                <span>+12%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>تمرين الساق</span>
+                                <span>+18%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button style="margin-top: 15px;" onclick="openEditModal('strength')">
+                        <i class="fas fa-edit"></i> تعديل معدل التقدم
+                    </button>
+                </div>
+                
+                <div class="progress-card">
+                    <h3><i class="fas fa-fire"></i> حرق السعرات الحرارية</h3>
+                    <div class="progress-section">
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>اليوم</span>
+                                <span>720 سعرة</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill calories" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>أسبوعي</span>
+                                <span>5040 سعرة</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill calories" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>شهري</span>
+                                <span>21600 سعرة</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill calories" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button style="margin-top: 15px;" onclick="openEditModal('calories')">
+                        <i class="fas fa-edit"></i> تعديل السعرات
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card bodybuilding">
+                <h3><i class="fas fa-ruler"></i> القياسات الجسمية</h3>
+                <div class="measurements-grid">
+                    <div class="measurement-item">
+                        <span>الصدر</span>
+                        <div class="measurement-value">
+                            <span>110 سم</span>
+                            <i class="fas fa-edit edit-icon" onclick="openEditModal('chest')"></i>
+                        </div>
+                    </div>
+                    <div class="measurement-item">
+                        <span>الذراع</span>
+                        <div class="measurement-value">
+                            <span>42 سم</span>
+                            <i class="fas fa-edit edit-icon" onclick="openEditModal('arm')"></i>
+                        </div>
+                    </div>
+                    <div class="measurement-item">
+                        <span>الخصر</span>
+                        <div class="measurement-value">
+                            <span>80 سم</span>
+                            <i class="fas fa-edit edit-icon" onclick="openEditModal('waist')"></i>
+                        </div>
+                    </div>
+                    <div class="measurement-item">
+                        <span>الفخذ</span>
+                        <div class="measurement-value">
+                            <span>60 سم</span>
+                            <i class="fas fa-edit edit-icon" onclick="openEditModal('thigh')"></i>
+                        </div>
+                    </div>
+                </div>
+                <button style="margin-top: 15px;" onclick="openEditModal('allMeasurements')">
+                    <i class="fas fa-edit"></i> تعديل جميع القياسات
+                </button>
+            </div>
+        </div>
+        
+        <div id="fitness" class="tab-content">
+            <div class="fitness-stats">
+                <div class="fitness-stat">
+                    <h4>الجري الأسبوعي</h4>
+                    <p>15 كم</p>
+                </div>
+                <div class="fitness-stat">
+                    <h4>تمارين الكارديو</h4>
+                    <p>5 ساعات</p>
+                </div>
+                <div class="fitness-stat">
+                    <h4>استهلاك الماء</h4>
+                    <p>3 لتر/يوم</p>
+                </div>
+                <div class="fitness-stat">
+                    <h4>معدل النوم</h4>
+                    <p>7 ساعات</p>
+                </div>
+            </div>
+            
+            <div class="card fitness">
+                <h3><i class="fas fa-heart"></i> صحة القلب واللياقة</h3>
+                <div class="progress-section">
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>سرعة دقات القلب</span>
+                            <span>72 نبضة/د</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>التحمل</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>المرونة</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+                <button style="margin-top: 15px;" onclick="openEditModal('health')">
+                    <i class="fas fa-edit"></i> تعديل بيانات اللياقة
+                </button>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-trophy"></i> الإنجازات</h3>
+                <ul style="list-style-type: none;">
+                    <li style="padding: 10px; border-bottom: 1px solid #eee;">🎯 تحقيق هدف الجري لمسافة 10 كم</li>
+                    <li style="padding: 10px; border-bottom: 1px solid #eee;">⏱️ تحسين وقت الكارديو بنسبة 20%</li>
+                    <li style="padding: 10px;">🏆 زيادة تحمل القلب بنسبة 15%</li>
+                </ul>
+                <button style="margin-top: 15px;" onclick="openEditModal('achievements')">
+                    <i class="fas fa-edit"></i> تعديل الإنجازات
+                </button>
+            </div>
+        </div>
+        
+        <div id="weight" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-weight"></i> تتبع الوزن</h3>
+                <p>استخدم هذا القسم لتسجيل وزنك ومتابعة تقدمك مع مرور الوقت.</p>
+                
+                <div class="weight-form">
+                    <input type="number" id="weightValue" placeholder="الوزن (كغ)">
+                    <input type="date" id="weightDate">
+                    <button onclick="addWeight()">
+                        <i class="fas fa-plus"></i> إضافة الوزن
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card weight-history">
+                <h3><i class="fas fa-history"></i> سجل الوزن</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الوزن (كغ)</th>
+                            <th>التغيير</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weightTable">
+                        <tr>
+                            <td>2023-10-01</td>
+                            <td>87</td>
+                            <td>+0</td>
+                            <td>
+                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
+                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-08</td>
+                            <td>86</td>
+                            <td>-1</td>
+                            <td>
+                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
+                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-15</td>
+                            <td>85.5</td>
+                            <td>-0.5</td>
+                            <td>
+                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
+                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-22</td>
+                            <td>85</td>
+                            <td>-0.5</td>
+                            <td>
+                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
+                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج التعديل -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">تعديل البيانات</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <div class="form-group">
+                    <label for="editName">الاسم:</label>
+                    <input type="text" id="editName" value="أحمد محمد">
+                </div>
+                <div class="form-group">
+                    <label for="editTitle">اللقب:</label>
+                    <input type="text" id="editTitle" value="لاعب كمال أجسام ولياقة بدنية">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeEditModal()">إلغاء</button>
+                <button class="save-btn" onclick="saveChanges()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج تعديل القياسات -->
+    <div class="modal" id="measurementsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="measurementsModalTitle">تعديل القياسات الجسمية</h2>
+                <button class="close-btn" onclick="closeMeasurementsModal()">&times;</button>
+            </div>
+            <div id="measurementsModalBody">
+                <div class="form-group">
+                    <label for="editChest">الصدر (سم):</label>
+                    <input type="number" id="editChest" value="110">
+                </div>
+                <div class="form-group">
+                    <label for="editArm">الذراع (سم):</label>
+                    <input type="number" id="editArm" value="42">
+                </div>
+                <div class="form-group">
+                    <label for="editWaist">الخصر (سم):</label>
+                    <input type="number" id="editWaist" value="80">
+                </div>
+                <div class="form-group">
+                    <label for="editThigh">الفخذ (سم):</label>
+                    <input type="number" id="editThigh" value="60">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeMeasurementsModal()">إلغاء</button>
+                <button class="save-btn" onclick="saveMeasurements()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // فتح التبويبات
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // فتح نافذة التعديل
+        function openEditModal(type) {
+            if (type === 'allMeasurements') {
+                openMeasurementsModal();
+                return;
+            }
+            
+            const modal = document.getElementById('editModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            // تحديد المحتوى بناءً على النوع
+            switch(type) {
+                case 'profile':
+                    modalTitle.textContent = 'تعديل الملف الشخصي';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label for="editName">الاسم:</label>
+                            <input type="text" id="editName" value="أحمد محمد">
+                        </div>
+                        <div class="form-group">
+                            <label for="editTitle">اللقب:</label>
+                            <input type="text" id="editTitle" value="لاعب كمال أجسام ولياقة بدنية">
+                        </div>
+                    `;
+                    break;
+                case 'weight':
+                    modalTitle.textContent = 'تعديل الوزن';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label for="editWeight">الوزن الحالي (كغ):</label>
+                            <input type="number" id="editWeight" value="85">
+                        </div>
+                    `;
+                    break;
+                case 'strength':
+                    modalTitle.textContent = 'تعديل معدل التقدم في القوة';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label for="editLifting">رفع الأثقال (%):</label>
+                            <input type="number" id="editLifting" value="15">
+                        </div>
+                        <div class="form-group">
+                            <label for="editBench">تمرين البنش (%):</label>
+                            <input type="number" id="editBench" value="12">
+                        </div>
+                        <div class="form-group">
+                            <label for="editLegs">تمرين الساق (%):</label>
+                            <input type="number" id="editLegs" value="18">
+                        </div>
+                    `;
+                    break;
+                case 'calories':
+                    modalTitle.textContent = 'تعديل حرق السعرات الحرارية';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label for="editDailyCalories">السعرات اليومية:</label>
+                            <input type="number" id="editDailyCalories" value="720">
+                        </div>
+                        <div class="form-group">
+                            <label for="editWeeklyCalories">السعرات الأسبوعية:</label>
+                            <input type="number" id="editWeeklyCalories" value="5040">
+                        </div>
+                        <div class="form-group">
+                            <label for="editMonthlyCalories">السعرات الشهرية:</label>
+                            <input type="number" id="editMonthlyCalories" value="21600">
+                        </div>
+                    `;
+                    break;
+                default:
+                    modalTitle.textContent = 'تعديل البيانات';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label for="editValue">القيمة:</label>
+                            <input type="text" id="editValue" placeholder="أدخل القيمة الجديدة">
+                        </div>
+                    `;
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        // فتح نافذة تعديل القياسات
+        function openMeasurementsModal() {
+            document.getElementById('measurementsModal').style.display = 'flex';
+        }
+        
+        // إغلاق نافذة التعديل
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        // إغلاق نافذة تعديل القياسات
+        function closeMeasurementsModal() {
+            document.getElementById('measurementsModal').style.display = 'none';
+        }
+        
+        // حفظ التغييرات
+        function saveChanges() {
+            // هنا سيتم حفظ التغييرات في قاعدة البيانات أو المتغيرات
+            alert('تم حفظ التغييرات بنجاح!');
+            closeEditModal();
+        }
+        
+        // حفظ القياسات
+        function saveMeasurements() {
+            const chest = document.getElementById('editChest').value;
+            const arm = document.getElementById('editArm').value;
+            const waist = document.getElementById('editWaist').value;
+            const thigh = document.getElementById('editThigh').value;
+            
+            // هنا سيتم حفظ القياسات في المتغيرات أو قاعدة البيانات
+            document.querySelector('.measurement-item:nth-child(1) .measurement-value span').textContent = chest + ' سم';
+            document.querySelector('.measurement-item:nth-child(2) .measurement-value span').textContent = arm + ' سم';
+            document.querySelector('.measurement-item:nth-child(3) .measurement-value span').textContent = waist + ' سم';
+            document.querySelector('.measurement-item:nth-child(4) .measurement-value span').textContent = thigh + ' سم';
+            
+            alert('تم حفظ القياسات بنجاح!');
+            closeMeasurementsModal();
+        }
+        
+        // تغيير الصورة
+        function changeImage() {
+            alert('سيتم فتح خيارات تحميل الصورة');
+        }
+        
+        // إضافة وزن جديد
+        function addWeight() {
+            const weightValue = document.getElementById('weightValue').value;
+            const weightDate = document.getElementById('weightDate').value;
+            
+            if (!weightValue || !weightDate) {
+                alert('يرجى ملء جميع الحقول');
+                return;
+            }
+            
+            const table = document.getElementById('weightTable');
+            const newRow = table.insertRow(0);
+            
+            const dateCell = newRow.insertCell(0);
+            const weightCell = newRow.insertCell(1);
+            const changeCell = newRow.insertCell(2);
+            const actionsCell = newRow.insertCell(3);
+            
+            dateCell.textContent = weightDate;
+            weightCell.textContent = weightValue;
+            
+            if (table.rows.length > 1) {
+                const prevWeight = parseFloat(table.rows[1].cells[1].textContent);
+                const currentWeight = parseFloat(weightValue);
+                const change = (currentWeight - prevWeight).toFixed(1);
+                
+                if (change > 0) {
+                    changeCell.textContent = `+${change}`;
+                    changeCell.style.color = '#e74c3c';
+                } else if (change < 0) {
+                    changeCell.textContent = change;
+                    changeCell.style.color = '#2ecc71';
+                } else {
+                    changeCell.textContent = '0';
+                    changeCell.style.color = '#7f8c8d';
+                }
+            } else {
+                changeCell.textContent = '0';
+            }
+            
+            actionsCell.innerHTML = `
+                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
+                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
+            `;
+            
+            document.getElementById('weightValue').value = '';
+            document.getElementById('weightDate').value = '';
+        }
+        
+        // تعديل سجل الوزن
+        function editWeight(element) {
+            const row = element.parentElement.parentElement;
+            const date = row.cells[0].textContent;
+            const weight = row.cells[1].textContent;
+            
+            const newWeight = prompt('أدخل الوزن الجديد:', weight);
+            if (newWeight !== null && newWeight !== '') {
+                row.cells[1].textContent = newWeight;
+                
+                // إعادة حساب التغيير
+                if (row.rowIndex > 0) {
+                    const prevWeight = parseFloat(table.rows[row.rowIndex + 1].cells[1].textContent);
+                    const currentWeight = parseFloat(newWeight);
+                    const change = (currentWeight - prevWeight).toFixed(1);
+                    
+                    if (change > 0) {
+                        row.cells[2].textContent = `+${change}`;
+                        row.cells[2].style.color = '#e74c3c';
+                    } else if (change < 0) {
+                        row.cells[2].textContent = change;
+                        row.cells[2].style.color = '#2ecc71';
+                    } else {
+                        row.cells[2].textContent = '0';
+                        row.cells[2].style.color = '#7f8c8d';
+                    }
+                }
+                
+                // تحديث التغيير للسجل التالي إذا exists
+                if (row.rowIndex < table.rows.length - 1) {
+                    const nextRow = table.rows[row.rowIndex + 1];
+                    const nextWeight = parseFloat(nextRow.cells[1].textContent);
+                    const nextChange = (nextWeight - currentWeight).toFixed(1);
+                    
+                    if (nextChange > 0) {
+                        nextRow.cells[2].textContent = `+${nextChange}`;
+                        nextRow.cells[2].style.color = '#e74c3c';
+                    } else if (nextChange < 0) {
+                        nextRow.cells[2].textContent = nextChange;
+                        nextRow.cells[2].style.color = '#2ecc71';
+                    } else {
+                        nextRow.cells[2].textContent = '0';
+                        nextRow.cells[2].style.color = '#7f8c8d';
+                    }
+                }
+            }
+        }
+        
+        // حذف سجل الوزن
+        function deleteWeight(element) {
+            if (confirm('هل أنت متأكد من أنك تريد حذف هذا السجل؟')) {
+                const row = element.parentElement.parentElement;
+                const table = document.getElementById('weightTable');
+                
+                // إذا كان هناك سجل بعده، نقوم بتحديث قيم التغيير
+                if (row.rowIndex < table.rows.length - 1) {
+                    const nextRow = table.rows[row.rowIndex + 1];
+                    nextRow.cells[2].textContent = '0';
+                    nextRow.cells[2].style.color = '#7f8c8d';
+                }
+                
+                row.parentElement.removeChild(row);
+            }
+        }
+        
+        // تعيين التاريخ الحالي كقيمة افتراضية
+        document.getElementById('weightDate').valueAsDate = new Date();
+    </script>
+</body>
+</html>
