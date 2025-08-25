@@ -562,6 +562,16 @@
             cursor: pointer;
         }
         
+        .background-sync-status {
+            background-color: #E8F5E9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
         @media (max-width: 768px) {
             .tasks-container {
                 grid-template-columns: 1fr;
@@ -607,6 +617,10 @@
             <div class="date-display" id="current-date">الاثنين، ١ يناير ٢٠٢٤</div>
             <div class="streak-counter">سلسلة الإنجاز: <span id="streak-count">0</span> يوم</div>
         </header>
+        
+        <div class="background-sync-status" id="background-sync-status" style="display: none;">
+            <i class="fas fa-sync-alt"></i> المؤقت يعمل في الخلفية حتى عند إغلاق التطبيق
+        </div>
         
         <div class="app-controls">
             <button class="control-btn start-btn" onclick="startApp()">
@@ -670,6 +684,7 @@
                     <input type="email" id="email-input" placeholder="example@email.com">
                     <button onclick="enableEmailNotifications()">تفعيل الإشعارات</button>
                 </div>
+                <div id="email-status"></div>
             </div>
             
             <div id="username-tab" class="contact-tab-content" style="display: none;">
@@ -839,6 +854,8 @@
         const contactStatus = document.getElementById('contact-status');
         const appStatusElement = document.getElementById('app-status');
         const userIdElement = document.getElementById('user-id');
+        const backgroundSyncStatus = document.getElementById('background-sync-status');
+        const emailStatusElement = document.getElementById('email-status');
 
         // متغيرات التمرين العشوائي
         let randomIntervalType = localStorage.getItem('randomIntervalType') || 'minute';
@@ -847,6 +864,7 @@
         let contactMethod = localStorage.getItem('contactMethod') || '';
         let contactValue = localStorage.getItem('contactValue') || '';
         let appState = localStorage.getItem('appState') || 'stopped'; // stopped, active, paused
+        let backgroundSyncSupported = 'serviceWorker' in navigator && 'SyncManager' in window;
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
@@ -857,6 +875,7 @@
             loadRandomExercise();
             setupContactMethod();
             updateAppStatus();
+            setupServiceWorker();
             
             // إذا كان التطبيق نشطاً، نستأنف المؤقت
             if (appState === 'active') {
@@ -870,7 +889,34 @@
             setTimeout(() => {
                 saveStatusElement.style.display = 'none';
             }, 3000);
+            
+            // التحقق من حالة المزامنة في الخلفية
+            if (backgroundSyncSupported) {
+                backgroundSyncStatus.style.display = 'block';
+            }
         });
+
+        // إعداد Service Worker للمزامنة في الخلفية
+        async function setupServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('Service Worker registered with scope:', registration.scope);
+                    
+                    // تحديث حالة المزامنة في الخلفية
+                    if (backgroundSyncSupported) {
+                        backgroundSyncStatus.innerHTML = '<i class="fas fa-sync-alt"></i> المؤقت يعمل في الخلفية حتى عند إغلاق التطبيق';
+                    }
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                    if (backgroundSyncSupported) {
+                        backgroundSyncStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> المزامنة في الخلفية غير متاحة';
+                        backgroundSyncStatus.style.backgroundColor = '#FFEBEE';
+                        backgroundSyncStatus.style.color = '#D32F2F';
+                    }
+                }
+            }
+        }
 
         // تبديل بين طرق التواصل
         function switchContactTab(tabName) {
@@ -914,208 +960,68 @@
                         break;
                 }
             }
-            
-            // إنشاء معرف فريد إذا لم يكن موجوداً
-            if (!localStorage.getItem('userId')) {
-                const newUserId = 'USR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-                localStorage.setItem('userId', newUserId);
-                userIdElement.textContent = newUserId;
-            } else {
-                userIdElement.textContent = localStorage.getItem('userId');
-            }
         }
 
         // تفعيل الإشعارات عبر البريد الإلكتروني
         function enableEmailNotifications() {
-            const emailInput = document.getElementById('email-input');
-            const emailValue = emailInput.value.trim();
-            
-            if (emailValue && isValidEmail(emailValue)) {
+            const email = document.getElementById('email-input').value;
+            if (validateEmail(email)) {
                 contactMethod = 'email';
-                contactValue = emailValue;
-                
-                // حفظ الإعدادات
+                contactValue = email;
                 localStorage.setItem('contactMethod', 'email');
-                localStorage.setItem('contactValue', emailValue);
-                
-                contactStatus.textContent = 'تم تفعيل الإشعارات على: ' + emailValue;
+                localStorage.setItem('contactValue', email);
+                contactStatus.textContent = 'تم تفعيل الإشعارات على: ' + email;
                 contactStatus.style.color = 'var(--success-color)';
+                emailStatusElement.textContent = 'تم التحقق من البريد الإلكتروني بنجاح!';
+                emailStatusElement.style.color = 'var(--success-color)';
                 
-                // إرسال إشعار ترحيبي (محاكاة)
-                simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار على بريدك الإلكتروني عند كل تمرين جديد.');
+                // محاكاة إرسال رسالة تأكيد
+                simulateEmailConfirmation(email);
             } else {
                 contactStatus.textContent = 'يرجى إدخال بريد إلكتروني صحيح';
                 contactStatus.style.color = 'var(--danger-color)';
+                emailStatusElement.textContent = 'البريد الإلكتروني غير صحيح!';
+                emailStatusElement.style.color = 'var(--danger-color)';
             }
+        }
+
+        // محاكاة إرسال تأكيد البريد الإلكتروني
+        function simulateEmailConfirmation(email) {
+            setTimeout(() => {
+                emailStatusElement.innerHTML = '<i class="fas fa-envelope"></i> تم إرسال رسالة تأكيد إلى بريدك الإلكتروني';
+                emailStatusElement.style.color = 'var(--accent-color)';
+            }, 2000);
         }
 
         // تفعيل الإشعارات عبر اسم المستخدم
         function enableUsernameNotifications() {
-            const usernameInput = document.getElementById('username-input');
-            const usernameValue = usernameInput.value.trim();
-            
-            if (usernameValue) {
+            const username = document.getElementById('username-input').value;
+            if (username.length >= 3) {
                 contactMethod = 'username';
-                contactValue = usernameValue;
-                
-                // حفظ الإعدادات
+                contactValue = username;
                 localStorage.setItem('contactMethod', 'username');
-                localStorage.setItem('contactValue', usernameValue);
-                
-                contactStatus.textContent = 'تم تفعيل الإشعارات لاسم المستخدم: ' + usernameValue;
+                localStorage.setItem('contactValue', username);
+                contactStatus.textContent = 'تم تفعيل الإشعارات لاسم المستخدم: ' + username;
                 contactStatus.style.color = 'var(--success-color)';
-                
-                // إرسال إشعار ترحيبي (محاكاة)
-                simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار عند كل تمرين جديد.');
             } else {
-                contactStatus.textContent = 'يرجى إدخال اسم مستخدم صحيح';
+                contactStatus.textContent = 'يجب أن يكون اسم المستخدم 3 أحرف على الأقل';
                 contactStatus.style.color = 'var(--danger-color)';
             }
-        }
-
-        // تفعيل الإشعارات عبر المعرف الفريد
-        function enableUserIdNotifications() {
-            contactMethod = 'userid';
-            contactValue = localStorage.getItem('userId');
-            
-            // حفظ الإعدادات
-            localStorage.setItem('contactMethod', 'userid');
-            localStorage.setItem('contactValue', contactValue);
-            
-            contactStatus.textContent = 'تم تفعيل الإشعارات باستخدام المعرف الفريد';
-            contactStatus.style.color = 'var(--success-color)';
-            
-            // إرسال إشعار ترحيبي (محاكاة)
-            simulateNotification('تم تفعيل الإشعارات بنجاح! سيصلك إشعار عند كل تمرين جديد.');
         }
 
         // نسخ المعرف الفريد
         function copyUserId() {
-            const userId = localStorage.getItem('userId');
+            const userId = userIdElement.textContent;
             navigator.clipboard.writeText(userId).then(() => {
-                contactStatus.textContent = 'تم نسخ المعرف إلى الحافظة';
+                contactStatus.textContent = 'تم نسخ المعرف: ' + userId;
                 contactStatus.style.color = 'var(--success-color)';
-            }).catch(err => {
-                contactStatus.textContent = 'فشل نسخ المعرف';
-                contactStatus.style.color = 'var(--danger-color)';
             });
         }
 
         // التحقق من صحة البريد الإلكتروني
-        function isValidEmail(email) {
+        function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
-        }
-
-        // بدء التطبيق
-        function startApp() {
-            appState = 'active';
-            localStorage.setItem('appState', appState);
-            startRandomInterval();
-            updateAppStatus();
-            showNotification('تم بدء التحدي بنجاح!', 'success');
-        }
-
-        // إيقاف التطبيق مؤقتاً
-        function pauseApp() {
-            appState = 'paused';
-            localStorage.setItem('appState', appState);
-            stopRandomExercise();
-            updateAppStatus();
-            showNotification('تم إيقاف التحدي مؤقتاً', 'warning');
-        }
-
-        // إيقاف التطبيق بالكامل
-        function stopApp() {
-            appState = 'stopped';
-            localStorage.setItem('appState', appState);
-            stopRandomExercise();
-            updateAppStatus();
-            showNotification('تم إيقاف التحدي بالكامل', 'info');
-        }
-
-        // تحديث حالة التطبيق
-        function updateAppStatus() {
-            let statusText = '';
-            let statusClass = '';
-            
-            switch(appState) {
-                case 'active':
-                    statusText = 'التطبيق يعمل بنشاط - التحدي قيد التنفيذ';
-                    statusClass = 'status-active';
-                    break;
-                case 'paused':
-                    statusText = 'التطبيق متوقف مؤقتاً - يمكنك الاستئناف لاحقاً';
-                    statusClass = 'status-paused';
-                    break;
-                case 'stopped':
-                    statusText = 'التطبيق متوقف حالياً - ابدأ التحدي عندما تكون مستعداً';
-                    statusClass = 'status-stopped';
-                    break;
-            }
-            
-            appStatusElement.textContent = statusText;
-            appStatusElement.className = 'app-status ' + statusClass;
-        }
-
-        // إظهار إشعار
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                <div>
-                    <h4>${message}</h4>
-                    <p>${new Date().toLocaleTimeString('ar-SA')}</p>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
-
-        // محاكاة إرسال إشعار
-        function simulateNotification(message) {
-            console.log('إشعار إلى ' + contactMethod + ' (' + contactValue + '): ' + message);
-            
-            // في تطبيق حقيقي، هنا سيتم الاتصال بخدمة إرسال الرسائل
-            showNotification('تم إرسال إشعار بنجاح', 'success');
-        }
-
-        // إظهار رسالة بدء المهمة
-        function showStartNotification() {
-            startNotification.classList.add('show');
-            
-            setTimeout(() => {
-                startNotification.classList.remove('show');
-            }, 3000);
-        }
-
-        // حفظ البيانات في localStorage
-        function saveData() {
-            localStorage.setItem('fitnessTasks', JSON.stringify(fitnessTasks));
-            localStorage.setItem('randomIntervalType', randomIntervalType);
-            
-            if (nextRandomTime) {
-                localStorage.setItem('nextRandomTime', nextRandomTime.getTime());
-            }
-            
-            // إظهار حالة الحفظ
-            saveStatusElement.style.display = 'flex';
-            
-            setTimeout(() => {
-                saveStatusElement.style.display = 'none';
-            }, 2000);
         }
 
         // تحديث التاريخ الحالي
@@ -1125,24 +1031,13 @@
             currentDateElement.textContent = now.toLocaleDateString('ar-SA', options);
         }
 
-        // تحميل التمرين العشوائي من الذاكرة
-        function loadRandomExercise() {
-            const savedExerciseName = localStorage.getItem('randomExerciseName');
-            const savedExerciseDesc = localStorage.getItem('randomExerciseDesc');
-            
-            if (savedExerciseName && savedExerciseDesc) {
-                randomExerciseName.textContent = savedExerciseName;
-                randomExerciseDesc.textContent = savedExerciseDesc;
-            } else {
-                changeRandomExercise();
-            }
-        }
-
-        // عرض التمارين في الأقسام المناسبة
+        // عرض التمارين
         function renderTasks() {
+            // مسح المحتوى الحالي
             completedTasksElement.innerHTML = '';
             pendingTasksElement.innerHTML = '';
             
+            // فرز التمارين
             const completedTasks = fitnessTasks.filter(task => task.completed);
             const pendingTasks = fitnessTasks.filter(task => !task.completed);
             
@@ -1150,8 +1045,7 @@
             if (completedTasks.length > 0) {
                 completedEmptyElement.style.display = 'none';
                 completedTasks.forEach(task => {
-                    const taskElement = createTaskElement(task, true);
-                    completedTasksElement.appendChild(taskElement);
+                    completedTasksElement.appendChild(createTaskElement(task));
                 });
             } else {
                 completedEmptyElement.style.display = 'block';
@@ -1161,145 +1055,174 @@
             if (pendingTasks.length > 0) {
                 pendingEmptyElement.style.display = 'none';
                 pendingTasks.forEach(task => {
-                    const taskElement = createTaskElement(task, false);
-                    pendingTasksElement.appendChild(taskElement);
+                    pendingTasksElement.appendChild(createTaskElement(task));
                 });
             } else {
                 pendingEmptyElement.style.display = 'block';
             }
-            
-            // حفظ البيانات
-            saveData();
         }
 
         // إنشاء عنصر تمرين
-        function createTaskElement(task, isCompleted) {
+        function createTaskElement(task) {
             const taskElement = document.createElement('div');
-            taskElement.className = `task-card ${isCompleted ? 'completed' : ''}`;
+            taskElement.className = `task-card ${task.completed ? 'completed' : ''}`;
+            
+            const typeIcons = {
+                strength: '💪',
+                cardio: '🏃',
+                flexibility: '🧘',
+                balance: '⚖️',
+                core: '🔥'
+            };
+            
             taskElement.innerHTML = `
-                <h3>
-                    ${task.name}
-                    <button class="btn btn-delete" onclick="deleteTask(${task.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </h3>
+                <h3>${typeIcons[task.type] || '🏋️'} ${task.name} ${task.completed ? '<span style="color: var(--success-color);"><i class="fas fa-check-circle"></i></span>' : ''}</h3>
                 <p>${task.description}</p>
                 <div class="task-actions">
-                    <span class="task-type">${getTypeName(task.type)}</span>
-                    <button class="btn ${isCompleted ? 'btn-incomplete' : 'btn-complete'}" 
-                            onclick="toggleTask(${task.id})">
-                        <i class="fas ${isCompleted ? 'fa-undo' : 'fa-check'}"></i>
-                        ${isCompleted ? 'تراجع' : 'إنجاز'}
+                    <button class="btn ${task.completed ? 'btn-incomplete' : 'btn-complete'}" onclick="toggleTask(${task.id})">
+                        <i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i> ${task.completed ? 'تراجع' : 'إنجاز'}
+                    </button>
+                    <button class="btn-delete" onclick="deleteTask(${task.id})">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             `;
+            
             return taskElement;
         }
 
-        // الحصول على اسم نوع التمرين بالعربية
-        function getTypeName(type) {
-            const types = {
-                'strength': 'تمارين القوة',
-                'cardio': 'تمارين الكارديو',
-                'flexibility': 'تمارين المرونة',
-                'balance': 'تمارين التوازن',
-                'core': 'تمارين核心'
-            };
-            return types[type] || type;
-        }
-
-        // تبديل حالة إكمال التمرين
+        // تبديل حالة التمرين (مكتمل/غير مكتمل)
         function toggleTask(taskId) {
-            const task = fitnessTasks.find(t => t.id === taskId);
-            if (task) {
-                task.completed = !task.completed;
+            const taskIndex = fitnessTasks.findIndex(task => task.id === taskId);
+            if (taskIndex !== -1) {
+                fitnessTasks[taskIndex].completed = !fitnessTasks[taskIndex].completed;
+                saveTasks();
                 renderTasks();
                 updateProgress();
                 
-                // إذا كانت جميع التمارين مكتملة، زيادة عداد السلسلة
-                if (fitnessTasks.every(t => t.completed)) {
-                    incrementStreak();
+                // إذا تم إنجاز التمرين، تحقق من الإنجاز
+                if (fitnessTasks[taskIndex].completed) {
+                    checkAchievements();
                 }
             }
         }
 
-        // حذف التمرين
+        // حذف تمرين
         function deleteTask(taskId) {
             if (confirm('هل أنت متأكد من أنك تريد حذف هذا التمرين؟')) {
                 fitnessTasks = fitnessTasks.filter(task => task.id !== taskId);
+                saveTasks();
                 renderTasks();
                 updateProgress();
-            }
-        }
-
-        // تحديث شريط التقدم
-        function updateProgress() {
-            const completedTasks = fitnessTasks.filter(task => task.completed).length;
-            const totalTasks = fitnessTasks.length;
-            const percentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-            
-            progressFillElement.style.width = `${percentage}%`;
-            progressTextElement.textContent = `${Math.round(percentage)}% مكتمل (${completedTasks}/${totalTasks} تمارين)`;
-        }
-
-        // إدارة سلسلة الإنجاز
-        function loadStreak() {
-            const streak = localStorage.getItem('fitnessStreak') || 0;
-            streakCountElement.textContent = streak;
-        }
-
-        function incrementStreak() {
-            let streak = parseInt(localStorage.getItem('fitnessStreak') || 0);
-            const lastCompletion = localStorage.getItem('lastCompletion');
-            const today = new Date().toDateString();
-            
-            // إذا كان الإكمال الأخير ليس اليوم، زيادة السلسلة
-            if (lastCompletion !== today) {
-                streak++;
-                localStorage.setItem('fitnessStreak', streak);
-                localStorage.setItem('lastCompletion', today);
-                streakCountElement.textContent = streak;
-                
-                if (streak % 5 === 0) {
-                    showNotification(`مبروك! لقد حافظت على سلسلة إنجاز لمدة ${streak} أيام متتالية! 🏆`, 'success');
-                }
             }
         }
 
         // إضافة تمرين جديد
         function addNewTask() {
-            const name = document.getElementById('task-name').value;
-            const description = document.getElementById('task-desc').value;
-            const type = document.getElementById('task-type').value;
+            const nameInput = document.getElementById('task-name');
+            const descInput = document.getElementById('task-desc');
+            const typeInput = document.getElementById('task-type');
             
-            if (name && description) {
-                const newTask = {
-                    id: fitnessTasks.length > 0 ? Math.max(...fitnessTasks.map(t => t.id)) + 1 : 1,
-                    name: name,
-                    description: description,
-                    completed: false,
-                    type: type
-                };
+            if (nameInput.value.trim() === '') {
+                alert('يرجى إدخال اسم التمرين');
+                return;
+            }
+            
+            const newTask = {
+                id: Date.now(),
+                name: nameInput.value,
+                description: descInput.value,
+                completed: false,
+                type: typeInput.value
+            };
+            
+            fitnessTasks.push(newTask);
+            saveTasks();
+            renderTasks();
+            updateProgress();
+            
+            // مسح الحقول
+            nameInput.value = '';
+            descInput.value = '';
+            
+            // إظهار رسالة نجاح
+            showNotification('تم إضافة التمرين بنجاح!');
+        }
+
+        // حفظ التمارين في localStorage
+        function saveTasks() {
+            localStorage.setItem('fitnessTasks', JSON.stringify(fitnessTasks));
+            
+            // إظهار حالة الحفظ مؤقتاً
+            saveStatusElement.style.display = 'flex';
+            setTimeout(() => {
+                saveStatusElement.style.display = 'none';
+            }, 2000);
+        }
+
+        // تحديث شريط التقدم
+        function updateProgress() {
+            const totalTasks = fitnessTasks.length;
+            const completedTasks = fitnessTasks.filter(task => task.completed).length;
+            const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            progressFillElement.style.width = `${progressPercentage}%`;
+            progressTextElement.textContent = `${Math.round(progressPercentage)}% مكتمل (${completedTasks}/${totalTasks} تمارين)`;
+        }
+
+        // تحميل سلسلة الإنجاز
+        function loadStreak() {
+            const lastCompletedDate = localStorage.getItem('lastCompletedDate');
+            const streakCount = parseInt(localStorage.getItem('streakCount')) || 0;
+            
+            // إذا كان اليوم هو اليوم التالي لآخر إنجاز، زيادة السلسلة
+            if (lastCompletedDate) {
+                const lastDate = new Date(lastCompletedDate);
+                const today = new Date();
+                const diffTime = Math.abs(today - lastDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 
-                fitnessTasks.push(newTask);
-                renderTasks();
-                updateProgress();
-                
-                // مسح الحقول
-                document.getElementById('task-name').value = '';
-                document.getElementById('task-desc').value = '';
-                
-                // الانتقال إلى قسم التمارين قيد الإنجاز
-                switchTab('pending');
-                
-                showNotification('تم إضافة التمرين بنجاح!', 'success');
+                if (diffDays === 1) {
+                    // اليوم هو اليوم التالي، زيادة السلسلة
+                    const newStreakCount = streakCount + 1;
+                    localStorage.setItem('streakCount', newStreakCount);
+                    localStorage.setItem('lastCompletedDate', today.toISOString());
+                    streakCountElement.textContent = newStreakCount;
+                } else if (diffDays > 1) {
+                    // فجوة في السلسلة، إعادة تعيين
+                    localStorage.setItem('streakCount', '0');
+                    streakCountElement.textContent = '0';
+                } else {
+                    // نفس اليوم، الحفاظ على السلسلة
+                    streakCountElement.textContent = streakCount;
+                }
             } else {
-                showNotification('يرجى ملء جميع الحقول', 'warning');
+                streakCountElement.textContent = streakCount;
             }
         }
 
-        // تبديل بين علامات التبويب
-        function switchTab(tabName) {
+        // التحقق من الإنجازات
+        function checkAchievements() {
+            const completedTasks = fitnessTasks.filter(task => task.completed).length;
+            
+            if (completedTasks >= fitnessTasks.length) {
+                // جميع التمارين مكتملة
+                const today = new Date();
+                localStorage.setItem('lastCompletedDate', today.toISOString());
+                
+                // زيادة السلسلة
+                const streakCount = parseInt(localStorage.getItem('streakCount')) || 0;
+                const newStreakCount = streakCount + 1;
+                localStorage.setItem('streakCount', newStreakCount);
+                streakCountElement.textContent = newStreakCount;
+                
+                // إظهار رسالة تهنئة
+                showNotification('مبروك! لقد أكملت جميع تمارين اليوم! 🎉');
+            }
+        }
+
+        // تبديل علامات التبويب
+        function switchTab(tabId) {
             // إخفاء جميع المحتويات
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -1311,10 +1234,28 @@
             });
             
             // تفعيل المحتوى المطلوب
-            document.getElementById(`${tabName}-tab`).classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
             
             // تفعيل الزر المطلوب
-            document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // تحميل تمرين عشوائي
+        function loadRandomExercise() {
+            const savedExercise = localStorage.getItem('currentRandomExercise');
+            if (savedExercise) {
+                const exercise = JSON.parse(savedExercise);
+                randomExerciseName.textContent = exercise.name;
+                randomExerciseDesc.textContent = exercise.description;
+            } else {
+                // إذا لم يكن هناك تمرين محفوظ، اختيار واحد عشوائي
+                changeRandomExercise();
+            }
+            
+            // تحديث المؤقت إذا كان هناك وقت محدد
+            if (nextRandomTime) {
+                updateRandomTimer();
+            }
         }
 
         // تغيير التمرين العشوائي
@@ -1326,139 +1267,256 @@
             randomExerciseDesc.textContent = exercise.description;
             
             // حفظ التمرين الحالي
-            localStorage.setItem('randomExerciseName', exercise.name);
-            localStorage.setItem('randomExerciseDesc', exercise.description);
+            localStorage.setItem('currentRandomExercise', JSON.stringify(exercise));
             
             // إرسال إشعار إذا كان مفعلاً
-            if (contactMethod) {
-                simulateNotification('تم تحديث التمرين العشوائي: ' + exercise.name);
+            if (contactMethod && contactValue) {
+                sendExerciseNotification(exercise);
             }
             
             // إعادة ضبط المؤقت
-            setNextRandomTime();
+            resetRandomTimer();
+            
+            // إظهار رسالة
+            showNotification('تم تغيير التمرين العشوائي: ' + exercise.name);
         }
 
-        // إضافة التمرين العشوائي إلى قائمة التمارين
-        function addRandomToTasks() {
-            const newTask = {
-                id: fitnessTasks.length > 0 ? Math.max(...fitnessTasks.map(t => t.id)) + 1 : 1,
-                name: randomExerciseName.textContent,
-                description: randomExerciseDesc.textContent,
-                completed: false,
-                type: randomExercises.find(e => e.name === randomExerciseName.textContent)?.type || "strength"
-            };
+        // إرسال إشعار بالتمرين
+        function sendExerciseNotification(exercise) {
+            // محاكاة إرسال الإشعار
+            console.log(`إرسال إشعار ${contactMethod === 'email' ? 'بالبريد الإلكتروني' : 'باسم المستخدم'} حول التمرين: ${exercise.name}`);
             
-            fitnessTasks.push(newTask);
-            renderTasks();
-            updateProgress();
+            // إظهار رسالة في الواجهة
+            contactStatus.textContent = `تم إرسال إشعار حول التمرين: ${exercise.name}`;
+            contactStatus.style.color = 'var(--accent-color)';
             
-            showNotification('تم إضافة التمرين العشوائي إلى قائمة تمارينك!', 'success');
+            // إخفاء الرسالة بعد 3 ثوان
+            setTimeout(() => {
+                if (contactMethod === 'email') {
+                    contactStatus.textContent = 'الإشعارات مفعلة على: ' + contactValue;
+                } else if (contactMethod === 'username') {
+                    contactStatus.textContent = 'الإشعارات مفعلة لاسم المستخدم: ' + contactValue;
+                } else {
+                    contactStatus.textContent = 'الإشعارات مفعلة باستخدام المعرف الفريد';
+                }
+                contactStatus.style.color = 'var(--success-color)';
+            }, 3000);
         }
 
-        // ضبط الفترة الزمنية للتمارين العشوائية
+        // تعيين الفاصل الزمني للتمرين العشوائي
         function setRandomInterval(intervalType) {
             randomIntervalType = intervalType;
+            localStorage.setItem('randomIntervalType', intervalType);
             
-            // تحديث حالة الأزرار
+            // تحديث الأزرار
             document.querySelectorAll('.random-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            document.querySelector(`.random-btn[onclick="setRandomInterval('${intervalType}')"]`).classList.add('active');
             
             // إعادة تشغيل المؤقت
-            startRandomInterval();
+            resetRandomTimer();
+            
+            // إظهار رسالة
+            showNotification(`تم تعيين التمرين العشوائي ليظهر كل ${intervalType === 'minute' ? 'دقيقة' : intervalType === 'hour' ? 'ساعة' : 'يوم'}`);
         }
 
-        // بدء المؤقت للتمارين العشوائية
-        function startRandomInterval() {
-            // إيقاف أي مؤقت سابق
-            if (randomInterval) {
-                clearInterval(randomInterval);
-            }
-            
-            // إذا كان التطبيق متوقفاً، لا نبدأ المؤقت
-            if (appState !== 'active') {
-                return;
-            }
-            
-            // تحديد الفترة بالمللي ثانية
-            let intervalMs;
-            switch (randomIntervalType) {
-                case 'minute':
-                    intervalMs = 60 * 1000; // دقيقة واحدة
-                    break;
-                case 'hour':
-                    intervalMs = 60 * 60 * 1000; // ساعة واحدة
-                    break;
-                case 'day':
-                    intervalMs = 24 * 60 * 60 * 1000; // يوم واحد
-                    break;
-                default:
-                    intervalMs = 60 * 1000;
-            }
-            
-            // بدء المؤقت
-            randomInterval = setInterval(changeRandomExercise, intervalMs);
-            
-            // ضبط وقت التمرين التالي
-            setNextRandomTime();
-            
-            // تحديث عداد الوقت كل ثانية
-            setInterval(updateNextRandomTimer, 1000);
-        }
-
-        // إيقاف التمارين العشوائية
+        // إيقاف التمرين العشوائي
         function stopRandomExercise() {
             if (randomInterval) {
                 clearInterval(randomInterval);
                 randomInterval = null;
-                nextRandomTimer.textContent = "مؤقت التمارين متوقف";
-                
-                // تحديث حالة الأزرار
-                document.querySelectorAll('.random-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        }
-
-        // ضبط وقت التمرين العشوائي التالي
-        function setNextRandomTime() {
-            let intervalMs;
-            switch (randomIntervalType) {
-                case 'minute':
-                    intervalMs = 60 * 1000;
-                    break;
-                case 'hour':
-                    intervalMs = 60 * 60 * 1000;
-                    break;
-                case 'day':
-                    intervalMs = 24 * 60 * 60 * 1000;
-                    break;
-                default:
-                    intervalMs = 60 * 1000;
             }
             
-            nextRandomTime = new Date(Date.now() + intervalMs);
-            localStorage.setItem('nextRandomTime', nextRandomTime.getTime());
+            localStorage.removeItem('nextRandomTime');
+            nextRandomTime = null;
+            nextRandomTimer.textContent = 'متوقف';
+            
+            // إلغاء تنشيط جميع الأزرار
+            document.querySelectorAll('.random-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // إظهار رسالة
+            showNotification('تم إيقاف التمرين العشوائي');
         }
 
-        // تحديث عداد الوقت للتمرين العشوائي التالي
-        function updateNextRandomTimer() {
-            if (!nextRandomTime) return;
+        // إعادة ضبط مؤقت التمرين العشوائي
+        function resetRandomTimer() {
+            if (randomInterval) {
+                clearInterval(randomInterval);
+            }
             
             const now = new Date();
-            const timeLeft = nextRandomTime - now;
+            nextRandomTime = new Date(now);
             
-            if (timeLeft <= 0) {
-                changeRandomExercise();
-                return;
+            switch(randomIntervalType) {
+                case 'minute':
+                    nextRandomTime.setMinutes(now.getMinutes() + 1);
+                    break;
+                case 'hour':
+                    nextRandomTime.setHours(now.getHours() + 1);
+                    break;
+                case 'day':
+                    nextRandomTime.setDate(now.getDate() + 1);
+                    break;
             }
             
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            localStorage.setItem('nextRandomTime', nextRandomTime.getTime().toString());
+            updateRandomTimer();
             
-            nextRandomTimer.textContent = `التالي: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            // بدء المؤقت
+            startRandomInterval();
+        }
+
+        // بدء مؤقت التمرين العشوائي
+        function startRandomInterval() {
+            if (randomInterval) {
+                clearInterval(randomInterval);
+            }
+            
+            randomInterval = setInterval(() => {
+                changeRandomExercise();
+            }, getIntervalTime());
+        }
+
+        // الحصول على وقت الفاصل الزمني
+        function getIntervalTime() {
+            switch(randomIntervalType) {
+                case 'minute': return 60000; // 60 ثانية
+                case 'hour': return 3600000; // 60 دقيقة
+                case 'day': return 86400000; // 24 ساعة
+                default: return 60000;
+            }
+        }
+
+        // تحديث مؤقت التمرين العشوائي
+        function updateRandomTimer() {
+            if (!nextRandomTime) return;
+            
+            const timerInterval = setInterval(() => {
+                const now = new Date();
+                const timeLeft = nextRandomTime - now;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    nextRandomTimer.textContent = 'الآن!';
+                } else {
+                    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                    
+                    nextRandomTimer.textContent = `التالي: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // إضافة التمرين العشوائي إلى قائمة التمارين
+        function addRandomToTasks() {
+            const currentExercise = JSON.parse(localStorage.getItem('currentRandomExercise'));
+            if (currentExercise) {
+                const newTask = {
+                    id: Date.now(),
+                    name: currentExercise.name,
+                    description: currentExercise.description,
+                    completed: false,
+                    type: currentExercise.type
+                };
+                
+                fitnessTasks.push(newTask);
+                saveTasks();
+                renderTasks();
+                updateProgress();
+                
+                // إظهار رسالة نجاح
+                showNotification('تم إضافة التمرين إلى قائمة تمارينك!');
+            }
+        }
+
+        // إظهار إشعار
+        function showNotification(message) {
+            const notification = document.getElementById('start-notification');
+            notification.querySelector('h4').textContent = message;
+            notification.querySelector('p').textContent = new Date().toLocaleTimeString('ar-SA');
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // إظهار إشعار بدء المهمة
+        function showStartNotification() {
+            if (!localStorage.getItem('appInitialized')) {
+                showNotification('مرحباً بك في تطبيق تحدي اللياقة اليومي!');
+                localStorage.setItem('appInitialized', 'true');
+            }
+        }
+
+        // بدء التطبيق
+        function startApp() {
+            appState = 'active';
+            localStorage.setItem('appState', 'active');
+            updateAppStatus();
+            
+            // بدء المؤقت
+            startRandomInterval();
+            
+            // إظهار رسالة
+            showNotification('تم بدء التحدي، المؤقت يعمل الآن!');
+        }
+
+        // إيقاف التطبيق مؤقتاً
+        function pauseApp() {
+            appState = 'paused';
+            localStorage.setItem('appState', 'paused');
+            updateAppStatus();
+            
+            // إيقاف المؤقت
+            if (randomInterval) {
+                clearInterval(randomInterval);
+                randomInterval = null;
+            }
+            
+            // إظهار رسالة
+            showNotification('تم إيقاف المؤقت مؤقتاً');
+        }
+
+        // إيقاف التطبيق
+        function stopApp() {
+            appState = 'stopped';
+            localStorage.setItem('appState', 'stopped');
+            updateAppStatus();
+            
+            // إيقاف المؤقت
+            if (randomInterval) {
+                clearInterval(randomInterval);
+                randomInterval = null;
+            }
+            
+            // إظهار رسالة
+            showNotification('تم إيقاف التطبيق');
+        }
+
+        // تحديث حالة التطبيق
+        function updateAppStatus() {
+            appStatusElement.className = 'app-status';
+            
+            switch(appState) {
+                case 'active':
+                    appStatusElement.classList.add('status-active');
+                    appStatusElement.innerHTML = '<i class="fas fa-play-circle"></i> التطبيق يعمل حالياً - المؤقت نشط';
+                    break;
+                case 'paused':
+                    appStatusElement.classList.add('status-paused');
+                    appStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> التطبيق متوقف مؤقتاً';
+                    break;
+                case 'stopped':
+                    appStatusElement.classList.add('status-stopped');
+                    appStatusElement.innerHTML = '<i class="fas fa-stop-circle"></i> التطبيق متوقف حالياً';
+                    break;
+            }
         }
     </script>
 </body>

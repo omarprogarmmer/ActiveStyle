@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق اللياقة - تمارين مخصصة وتقارير أسبوعية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            color: #fdbb2d;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #e6e6e6;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .section h2 {
+            color: #fdbb2d;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #fdbb2d;
+            padding-bottom: 10px;
+        }
+        
+        .exercise-selection {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .custom-exercise {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px dashed #fdbb2d;
+        }
+        
+        .calories-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .calories-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fdbb2d;
+            margin: 10px 0;
+        }
+        
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #fdbb2d;
+            text-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-start {
+            background: #00c853;
+            color: white;
+        }
+        
+        .btn-pause {
+            background: #ffab00;
+            color: white;
+        }
+        
+        .btn-reset {
+            background: #ff3d00;
+            color: white;
+        }
+        
+        .btn-add {
+            background: #2962ff;
+            color: white;
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .btn-custom {
+            background: #aa00ff;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .exercise-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        #exercise-items {
+            list-style: none;
+        }
+        
+        #exercise-items li {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .exercise-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exercise-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fdbb2d;
+        }
+        
+        .exercise-details {
+            color: #e6e6e6;
+            margin-top: 5px;
+        }
+        
+        .delete-btn {
+            background: #ff3d00;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-box h3 {
+            color: #fdbb2d;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            height: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00c853, #64dd17);
+            border-radius: 50px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .weekly-report {
+            margin-top: 40px;
+        }
+        
+        .week-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .week-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 2px solid #fdbb2d;
+            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        
+        .week-btn.active {
+            background: #fdbb2d;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+        
+        .chart-bar {
+            width: 40px;
+            background: #2962ff;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+        
+        .chart-bar span {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+        }
+        
+        .chart-day {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-display {
+                font-size: 2.5rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .chart-bar {
+                width: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>تطبيق متابعة التمارين مع تقارير أسبوعية</h1>
+        <p>أضف تمارينك المخصصة وتابع إحصائياتك الأسبوعية</p>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="section">
+                <h2>إضافة التمارين</h2>
+                <div class="exercise-selection">
+                    <div class="form-group">
+                        <label for="exercise-type">نوع التمرين</label>
+                        <select id="exercise-type">
+                            <option value="">اختر نوع التمرين</option>
+                            <option value="running">الجري</option>
+                            <option value="cycling"> ركوب الدراجات</option>
+                            <option value="swimming">السباحة</option>
+                            <option value="walking">المشي</option>
+                            <option value="weightlifting">رفع الأثقال</option>
+                            <option value="yoga">اليوغا</option>
+                            <option value="custom">تمرين مخصص</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exercise-duration">المدة (دقائق)</label>
+                        <input type="number" id="exercise-duration" min="1" max="180" placeholder="المدة بالدقائق">
+                    </div>
+                    
+                    <div id="custom-exercise-section" class="custom-exercise" style="display: none;">
+                        <div class="form-group">
+                            <label for="custom-name">اسم التمرين المخصص</label>
+                            <input type="text" id="custom-name" placeholder="اسم التمرين">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="custom-calories">معدل الحرق (سعرة/دقيقة)</label>
+                            <input type="number" id="custom-calories" min="1" max="20" placeholder="معدل الحرق">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="calories-target">الهدف اليومي (سعرة حرارية)</label>
+                        <input type="number" id="calories-target" min="1" value="500" placeholder="الهدف اليومي">
+                    </div>
+                    
+                    <div class="calories-info">
+                        <p>هذا التمرين يحرق تقريباً</p>
+                        <div class="calories-value" id="calories-burn">0</div>
+                        <p>سعرة حرارية</p>
+                    </div>
+                    
+                    <button class="btn btn-add" id="addExerciseBtn">
+                        <i class="fas fa-plus"></i> إضافة التمرين
+                    </button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>المؤقت الذكي</h2>
+                <div class="timer-display" id="timer">00:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-start" id="startBtn">
+                        <i class="fas fa-play"></i> بدء
+                    </button>
+                    <button class="btn btn-pause" id="pauseBtn">
+                        <i class="fas fa-pause"></i> إيقاف
+                    </button>
+                    <button class="btn btn-reset" id="resetBtn">
+                        <i class="fas fa-redo"></i> إعادة
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timer-set">ضبط المؤقت (دقائق)</label>
+                    <input type="number" id="timer-set" min="1" max="60" value="10">
+                </div>
+                
+                <button class="btn btn-add" id="setTimerBtn">
+                    <i class="fas fa-clock"></i> ضبط المؤقت
+                </button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>تمارين اليوم</h2>
+            <div class="exercise-list">
+                <ul id="exercise-items">
+                    <!-- تمارين سيتم اضافتها هنا -->
+                </ul>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <h3>إجمالي التمارين</h3>
+                <div class="stat-value" id="total-exercises">0</div>
+            </div>
+            <div class="stat-box">
+                <h3>السعرات المحروقة</h3>
+                <div class="stat-value" id="total-calories">0</div>
+            </div>
+            <div class="stat-box">
+                <h3>الهدف المتبقي</h3>
+                <div class="stat-value" id="remaining-calories">500</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="calories-progress" style="width: 0%">0%</div>
+        </div>
+        
+        <div class="section weekly-report">
+            <h2>التقرير الأسبوعي</h2>
+            
+            <div class="week-selector">
+                <button class="week-btn active" data-days="7">أسبوع واحد</button>
+                <button class="week-btn" data-days="14">أسبوعين</button>
+                <button class="week-btn" data-days="30">شهر</button>
+            </div>
+            
+            <div class="chart-container" id="weekly-chart">
+                <!-- الرسم البياني سيتم اضافته هنا -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التمارين ومعدل الحرق (سعرة حرارية لكل دقيقة)
+        const exerciseData = {
+            running: { calories: 10, name: "الجري" },
+            cycling: { calories: 8, name: "ركوب الدراجات" },
+            swimming: { calories: 7, name: "السباحة" },
+            walking: { calories: 4, name: "المشي" },
+            weightlifting: { calories: 5, name: "رفع الأثقال" },
+            yoga: { calories: 3, name: "اليوغا" },
+            custom: { calories: 5, name: "تمرين مخصص" }
+        };
+        
+        // عناصر DOM
+        const exerciseType = document.getElementById('exercise-type');
+        const exerciseDuration = document.getElementById('exercise-duration');
+        const customExerciseSection = document.getElementById('custom-exercise-section');
+        const customName = document.getElementById('custom-name');
+        const customCalories = document.getElementById('custom-calories');
+        const caloriesTarget = document.getElementById('calories-target');
+        const caloriesBurn = document.getElementById('calories-burn');
+        const addExerciseBtn = document.getElementById('addExerciseBtn');
+        const exerciseList = document.getElementById('exercise-items');
+        const totalExercisesElem = document.getElementById('total-exercises');
+        const totalCaloriesElem = document.getElementById('total-calories');
+        const remainingCaloriesElem = document.getElementById('remaining-calories');
+        const caloriesProgress = document.getElementById('calories-progress');
+        const weeklyChart = document.getElementById('weekly-chart');
+        
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const timerSet = document.getElementById('timer-set');
+        const setTimerBtn = document.getElementById('setTimerBtn');
+        
+        const weekButtons = document.querySelectorAll('.week-btn');
+        
+        // متغيرات المؤقت
+        let timer;
+        let timeLeft = 0;
+        let isRunning = false;
+        let totalSeconds = 0;
+        
+        // مصفوفة التمارين
+        let exercises = [];
+        let totalCaloriesBurned = 0;
+        let caloriesGoal = 500;
+        
+        // بيانات أسبوعية (لتخزين التمارين حسب التاريخ)
+        let weeklyData = {};
+        
+        // عند تغيير نوع التمرين
+        exerciseType.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customExerciseSection.style.display = 'block';
+            } else {
+                customExerciseSection.style.display = 'none';
+            }
+            updateCaloriesBurn();
+        });
+        
+        // تحديث عرض السعرات الحرارية عند تغيير التمرين أو المدة
+        function updateCaloriesBurn() {
+            const type = exerciseType.value;
+            const duration = parseInt(exerciseDuration.value) || 0;
+            
+            if (type && duration > 0) {
+                let caloriesPerMinute;
+                
+                if (type === 'custom') {
+                    caloriesPerMinute = parseInt(customCalories.value) || 5;
+                } else {
+                    caloriesPerMinute = exerciseData[type].calories;
+                }
+                
+                const calories = caloriesPerMinute * duration;
+                caloriesBurn.textContent = calories;
+            } else {
+                caloriesBurn.textContent = '0';
+            }
+        }
+        
+        // تحديث الإحصائيات والتقدم
+        function updateStats() {
+            totalExercisesElem.textContent = exercises.length;
+            totalCaloriesElem.textContent = totalCaloriesBurned;
+            
+            const remaining = Math.max(0, caloriesGoal - totalCaloriesBurned);
+            remainingCaloriesElem.textContent = remaining;
+            
+            const progress = Math.min(100, (totalCaloriesBurned / caloriesGoal) * 100);
+            caloriesProgress.style.width = `${progress}%`;
+            caloriesProgress.textContent = `${Math.round(progress)}%`;
+        }
+        
+        // إضافة تمرين جديد
+        function addExercise() {
+            const type = exerciseType.value;
+            const duration = parseInt(exerciseDuration.value);
+            
+            if (!type) {
+                alert('يرجى اختيار نوع التمرين!');
+                return;
+            }
+            
+            if (!duration || duration <= 0) {
+                alert('يرجى إدخال مدة التمرين!');
+                return;
+            }
+            
+            let exerciseName, caloriesPerMinute;
+            
+            if (type === 'custom') {
+                exerciseName = customName.value || "تمرين مخصص";
+                caloriesPerMinute = parseInt(customCalories.value) || 5;
+                
+                if (!customName.value) {
+                    alert('يرجى إدخال اسم التمرين المخصص!');
+                    return;
+                }
+            } else {
+                exerciseName = exerciseData[type].name;
+                caloriesPerMinute = exerciseData[type].calories;
+            }
+            
+            const calories = caloriesPerMinute * duration;
+            const today = new Date().toLocaleDateString('ar-EG');
+            
+            const exercise = {
+                id: Date.now(),
+                type,
+                duration,
+                calories,
+                name: exerciseName,
+                date: today
+            };
+            
+            exercises.push(exercise);
+            totalCaloriesBurned += calories;
+            
+            // حفظ في البيانات الأسبوعية
+            if (!weeklyData[today]) {
+                weeklyData[today] = { exercises: [], totalCalories: 0 };
+            }
+            
+            weeklyData[today].exercises.push(exercise);
+            weeklyData[today].totalCalories += calories;
+            
+            updateExerciseList();
+            updateStats();
+            updateWeeklyChart(7); // تحديث الرسم البياني لأسبوع واحد
+            
+            // مسح الحقول
+            exerciseType.value = '';
+            exerciseDuration.value = '';
+            customName.value = '';
+            customCalories.value = '';
+            customExerciseSection.style.display = 'none';
+            caloriesBurn.textContent = '0';
+        }
+        
+        // تحديث قائمة التمارين
+        function updateExerciseList() {
+            exerciseList.innerHTML = '';
+            
+            exercises.forEach(exercise => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <div class="exercise-info">
+                        <span class="exercise-name">${exercise.name}</span>
+                        <span class="exercise-details">المدة: ${exercise.duration} دقيقة | السعرات: ${exercise.calories}</span>
+                    </div>
+                    <button class="delete-btn" data-id="${exercise.id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                exerciseList.appendChild(listItem);
+            });
+            
+            // إضافة event listeners لأزرار الحذف
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteExercise(id);
+                });
+            });
+        }
+        
+        // حذف تمرين
+        function deleteExercise(id) {
+            const exerciseIndex = exercises.findIndex(exercise => exercise.id === id);
+            if (exerciseIndex !== -1) {
+                const exercise = exercises[exerciseIndex];
+                totalCaloriesBurned -= exercise.calories;
+                
+                // حذف من البيانات الأسبوعية
+                if (weeklyData[exercise.date]) {
+                    const weeklyIndex = weeklyData[exercise.date].exercises.findIndex(e => e.id === id);
+                    if (weeklyIndex !== -1) {
+                        weeklyData[exercise.date].exercises.splice(weeklyIndex, 1);
+                        weeklyData[exercise.date].totalCalories -= exercise.calories;
+                        
+                        if (weeklyData[exercise.date].exercises.length === 0) {
+                            delete weeklyData[exercise.date];
+                        }
+                    }
+                }
+                
+                exercises.splice(exerciseIndex, 1);
+                updateExerciseList();
+                updateStats();
+                updateWeeklyChart(7);
+            }
+        }
+        
+        // إنشاء رسم بياني أسبوعي
+        function updateWeeklyChart(days) {
+            weeklyChart.innerHTML = '';
+            
+            // إنشاء بيانات للرسم البياني (آخر X يوم)
+            const dates = [];
+            const caloriesData = [];
+            
+            const today = new Date();
+            for (let i = days-1; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(today.getDate() - i);
+                const dateString = date.toLocaleDateString('ar-EG');
+                
+                dates.push(dateString);
+                
+                if (weeklyData[dateString]) {
+                    caloriesData.push(weeklyData[dateString].totalCalories);
+                } else {
+                    caloriesData.push(0);
+                }
+            }
+            
+            // إنشاء الأعمدة البيانية
+            const maxCalories = Math.max(...caloriesData, 100); // على الأقل 100 للحفاظ على المقياس
+            
+            dates.forEach((date, index) => {
+                const dayName = getDayName(date);
+                const height = maxCalories > 0 ? (caloriesData[index] / maxCalories) * 100 : 0;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${height}%`;
+                
+                const caloriesText = document.createElement('span');
+                caloriesText.textContent = caloriesData[index];
+                
+                const dayText = document.createElement('div');
+                dayText.className = 'chart-day';
+                dayText.textContent = dayName;
+                
+                bar.appendChild(caloriesText);
+                bar.appendChild(dayText);
+                weeklyChart.appendChild(bar);
+            });
+        }
+        
+        // الحصول على اسم اليوم من التاريخ
+        function getDayName(dateString) {
+            const date = new Date(dateString);
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            return days[date.getDay()];
+        }
+        
+        // تهيئة المؤقت
+        function initTimer() {
+            timeLeft = totalSeconds;
+            updateTimerDisplay();
+        }
+        
+        // تحديث عرض المؤقت
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // بدء المؤقت
+        function startTimer() {
+            if (!isRunning && timeLeft > 0) {
+                isRunning = true;
+                timer = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        isRunning = false;
+                        alert('انتهى الوقت! لقد أكملت التمرين بنجاح!');
+                    }
+                }, 1000);
+            }
+        }
+        
+        // إيقاف المؤقت
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+        }
+        
+        // إعادة تعيين المؤقت
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            initTimer();
+        }
+        
+        // ضبط المؤقت
+        function setTimer() {
+            const minutes = parseInt(timerSet.value);
+            if (minutes && minutes > 0) {
+                totalSeconds = minutes * 60;
+                resetTimer();
+            } else {
+                alert('يرجى إدخال مدة صحيحة للمؤقت!');
+            }
+        }
+        
+        // تحديث الهدف اليومي
+        function updateCaloriesGoal() {
+            const goal = parseInt(caloriesTarget.value);
+            if (goal && goal > 0) {
+                caloriesGoal = goal;
+                updateStats();
+            }
+        }
+        
+        // إضافة event listeners
+        exerciseDuration.addEventListener('input', updateCaloriesBurn);
+        customCalories.addEventListener('input', updateCaloriesBurn);
+        addExerciseBtn.addEventListener('click', addExercise);
+        caloriesTarget.addEventListener('change', updateCaloriesGoal);
+        
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        resetBtn.addEventListener('click', resetTimer);
+        setTimerBtn.addEventListener('click', setTimer);
+        
+        // أحداث لأزرار اختيار الفترة
+        weekButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                weekButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const days = parseInt(this.getAttribute('data-days'));
+                updateWeeklyChart(days);
+            });
+        });
+        
+        // التهيئة الأولية
+        setTimer();
+        updateStats();
+        updateWeeklyChart(7);
+        
+        // إضافة بيانات نموذجية للعرض
+        const sampleData = {
+            exercises: [],
+            totalCalories: 0
+        };
+        
+        const today = new Date().toLocaleDateString('ar-EG');
+        weeklyData[today] = sampleData;
+    </script>
+</body>
+</html>

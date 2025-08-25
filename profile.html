@@ -474,15 +474,16 @@
                 <i class="fas fa-edit"></i> تعديل الملف الشخصي
             </button>
             <div class="profile-header">
-                <div class="profile-img">
-                    <i class="fas fa-user"></i>
+                <div class="profile-img" id="profileImageContainer">
+                    <i class="fas fa-user" id="profileIcon"></i>
+                    <img id="profileImage" style="display: none; width: 100%; height: 100%; object-fit: cover;">
                     <div class="change-img" onclick="changeImage()">
                         <i class="fas fa-camera"></i> تغيير
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h1>أحمد محمد</h1>
-                    <p>لاعب كمال أجسام ولياقة بدنية</p>
+                    <h1 id="profileName">أحمد محمد</h1>
+                    <p id="profileTitle">لاعب كمال أجسام ولياقة بدنية</p>
                 </div>
             </div>
         </div>
@@ -506,57 +507,57 @@
                 <div class="stat-box">
                     <i class="fas fa-edit edit-icon" onclick="openEditModal('weight')"></i>
                     <h4>الوزن الحالي</h4>
-                    <p>85 كغ</p>
+                    <p id="currentWeight">85 كغ</p>
                 </div>
                 <div class="stat-box">
                     <i class="fas fa-edit edit-icon" onclick="openEditModal('muscle')"></i>
                     <h4>كتلة العضلات</h4>
-                    <p>72%</p>
+                    <p id="muscleMass">72%</p>
                 </div>
                 <div class="stat-box">
                     <i class="fas fa-edit edit-icon" onclick="openEditModal('fat')"></i>
                     <h4>نسبة الدهون</h4>
-                    <p>15%</p>
+                    <p id="fatPercentage">15%</p>
                 </div>
                 <div class="stat-box">
                     <i class="fas fa-edit edit-icon" onclick="openEditModal('bmi')"></i>
                     <h4>مؤشر كتلة الجسم</h4>
-                    <p>26.2</p>
+                    <p id="bmiValue">26.2</p>
                 </div>
             </div>
             
             <div class="progress-stats">
-                <div class="progress-card">
-                    <h3><i class="fas fa-chart-line"></i> معدل التقدم في القوة</h3>
+                <!-- <div class="progress-card"> -->
+                    <!-- <h3><i class="fas fa-chart-line"></i> معدل التقدم في القوة</h3>
                     <div class="progress-section">
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>رفع الأثقال</span>
-                                <span>+15%</span>
+                                <span id="liftingProgress">+15%</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill progress" style="width: 75%"></div>
+                                <div class="progress-fill progress" id="liftingBar" style="width: 75%"></div>
                             </div>
                         </div>
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>تمرين البنش</span>
-                                <span>+12%</span>
+                                <span id="benchProgress">+12%</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill progress" style="width: 70%"></div>
+                                <div class="progress-fill progress" id="benchBar" style="width: 70%"></div>
                             </div>
                         </div>
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>تمرين الساق</span>
-                                <span>+18%</span>
+                                <span id="legsProgress">+18%</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill progress" style="width: 80%"></div>
+                                <div class="progress-fill progress" id="legsBar" style="width: 80%"></div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <button style="margin-top: 15px;" onclick="openEditModal('strength')">
                         <i class="fas fa-edit"></i> تعديل معدل التقدم
                     </button>
@@ -568,28 +569,28 @@
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>اليوم</span>
-                                <span>720 سعرة</span>
+                                <span id="dailyCalories">720 سعرة</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill calories" style="width: 60%"></div>
+                                <div class="progress-fill calories" id="dailyCaloriesBar" style="width: 60%"></div>
                             </div>
                         </div>
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>أسبوعي</span>
-                                <span>5040 سعرة</span>
+                                <span id="weeklyCalories">5040 سعرة</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill calories" style="width: 75%"></div>
+                                <div class="progress-fill calories" id="weeklyCaloriesBar" style="width: 75%"></div>
                             </div>
                         </div>
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>شهري</span>
-                                <span>21600 سعرة</span>
+                                <span id="monthlyCalories">21600 سعرة</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill calories" style="width: 85%"></div>
+                                <div class="progress-fill calories" id="monthlyCaloriesBar" style="width: 85%"></div>
                             </div>
                         </div>
                     </div>
@@ -605,28 +606,28 @@
                     <div class="measurement-item">
                         <span>الصدر</span>
                         <div class="measurement-value">
-                            <span>110 سم</span>
+                            <span id="chestMeasurement">110 سم</span>
                             <i class="fas fa-edit edit-icon" onclick="openEditModal('chest')"></i>
                         </div>
                     </div>
                     <div class="measurement-item">
                         <span>الذراع</span>
                         <div class="measurement-value">
-                            <span>42 سم</span>
+                            <span id="armMeasurement">42 سم</span>
                             <i class="fas fa-edit edit-icon" onclick="openEditModal('arm')"></i>
                         </div>
                     </div>
                     <div class="measurement-item">
                         <span>الخصر</span>
                         <div class="measurement-value">
-                            <span>80 سم</span>
+                            <span id="waistMeasurement">80 سم</span>
                             <i class="fas fa-edit edit-icon" onclick="openEditModal('waist')"></i>
                         </div>
                     </div>
                     <div class="measurement-item">
                         <span>الفخذ</span>
                         <div class="measurement-value">
-                            <span>60 سم</span>
+                            <span id="thighMeasurement">60 سم</span>
                             <i class="fas fa-edit edit-icon" onclick="openEditModal('thigh')"></i>
                         </div>
                     </div>
@@ -641,19 +642,19 @@
             <div class="fitness-stats">
                 <div class="fitness-stat">
                     <h4>الجري الأسبوعي</h4>
-                    <p>15 كم</p>
+                    <p id="weeklyRunning">15 كم</p>
                 </div>
                 <div class="fitness-stat">
                     <h4>تمارين الكارديو</h4>
-                    <p>5 ساعات</p>
+                    <p id="cardioHours">5 ساعات</p>
                 </div>
                 <div class="fitness-stat">
                     <h4>استهلاك الماء</h4>
-                    <p>3 لتر/يوم</p>
+                    <p id="waterIntake">3 لتر/يوم</p>
                 </div>
                 <div class="fitness-stat">
                     <h4>معدل النوم</h4>
-                    <p>7 ساعات</p>
+                    <p id="sleepHours">7 ساعات</p>
                 </div>
             </div>
             
@@ -663,28 +664,28 @@
                     <div class="progress-item">
                         <div class="progress-label">
                             <span>سرعة دقات القلب</span>
-                            <span>72 نبضة/د</span>
+                            <span id="heartRate">72 نبضة/د</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
+                            <div class="progress-fill" id="heartRateBar" style="width: 60%"></div>
                         </div>
                     </div>
                     <div class="progress-item">
                         <div class="progress-label">
                             <span>التحمل</span>
-                            <span>85%</span>
+                            <span id="endurance">85%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
+                            <div class="progress-fill" id="enduranceBar" style="width: 85%"></div>
                         </div>
                     </div>
                     <div class="progress-item">
                         <div class="progress-label">
                             <span>المرونة</span>
-                            <span>70%</span>
+                            <span id="flexibility">70%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%"></div>
+                            <div class="progress-fill" id="flexibilityBar" style="width: 70%"></div>
                         </div>
                     </div>
                 </div>
@@ -695,7 +696,7 @@
             
             <div class="card">
                 <h3><i class="fas fa-trophy"></i> الإنجازات</h3>
-                <ul style="list-style-type: none;">
+                <ul id="achievementsList" style="list-style-type: none;">
                     <li style="padding: 10px; border-bottom: 1px solid #eee;">🎯 تحقيق هدف الجري لمسافة 10 كم</li>
                     <li style="padding: 10px; border-bottom: 1px solid #eee;">⏱️ تحسين وقت الكارديو بنسبة 20%</li>
                     <li style="padding: 10px;">🏆 زيادة تحمل القلب بنسبة 15%</li>
@@ -732,42 +733,7 @@
                         </tr>
                     </thead>
                     <tbody id="weightTable">
-                        <tr>
-                            <td>2023-10-01</td>
-                            <td>87</td>
-                            <td>+0</td>
-                            <td>
-                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
-                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2023-10-08</td>
-                            <td>86</td>
-                            <td>-1</td>
-                            <td>
-                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
-                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2023-10-15</td>
-                            <td>85.5</td>
-                            <td>-0.5</td>
-                            <td>
-                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
-                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2023-10-22</td>
-                            <td>85</td>
-                            <td>-0.5</td>
-                            <td>
-                                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
-                                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
-                            </td>
-                        </tr>
+                        <!-- سيتم ملؤه بواسطة JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -782,14 +748,7 @@
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
             <div id="modalBody">
-                <div class="form-group">
-                    <label for="editName">الاسم:</label>
-                    <input type="text" id="editName" value="أحمد محمد">
-                </div>
-                <div class="form-group">
-                    <label for="editTitle">اللقب:</label>
-                    <input type="text" id="editTitle" value="لاعب كمال أجسام ولياقة بدنية">
-                </div>
+                <!-- سيتم ملؤه بواسطة JavaScript -->
             </div>
             <div class="modal-actions">
                 <button class="cancel-btn" onclick="closeEditModal()">إلغاء</button>
@@ -830,265 +789,535 @@
         </div>
     </div>
 
+    <!-- نموذج تعديل الإنجازات -->
+    <div class="modal" id="achievementsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تعديل الإنجازات</h2>
+                <button class="close-btn" onclick="closeAchievementsModal()">&times;</button>
+            </div>
+            <div id="achievementsModalBody">
+                <div class="form-group">
+                    <label for="achievement1">الإنجاز 1:</label>
+                    <input type="text" id="achievement1" placeholder="أدخل الإنجاز الأول">
+                </div>
+                <div class="form-group">
+                    <label for="achievement2">الإنجاز 2:</label>
+                    <input type="text" id="achievement2" placeholder="أدخل الإنجاز الثاني">
+                </div>
+                <div class="form-group">
+                    <label for="achievement3">الإنجاز 3:</label>
+                    <input type="text" id="achievement3" placeholder="أدخل الإنجاز الثالث">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeAchievementsModal()">إلغاء</button>
+                <button class="save-btn" onclick="saveAchievements()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // فتح التبويبات
+        // بيانات التطبيق
+        let userData = {
+            profile: {
+                name: "أحمد محمد",
+                title: "لاعب كمال أجسام ولياقة بدنية",
+                image: null
+            },
+            bodybuilding: {
+                weight: 85,
+                muscleMass: 72,
+                fatPercentage: 15,
+                bmi: 26.2,
+                strengthProgress: {
+                    lifting: 15,
+                    bench: 12,
+                    legs: 18
+                },
+                calories: {
+                    daily: 720,
+                    weekly: 5040,
+                    monthly: 21600
+                },
+                measurements: {
+                    chest: 110,
+                    arm: 42,
+                    waist: 80,
+                    thigh: 60
+                }
+            },
+            fitness: {
+                weeklyRunning: "15 كم",
+                cardioHours: "5 ساعات",
+                waterIntake: "3 لتر/يوم",
+                sleepHours: "7 ساعات",
+                healthStats: {
+                    heartRate: 72,
+                    endurance: 85,
+                    flexibility: 70
+                },
+                achievements: [
+                    "🎯 تحقيق هدف الجري لمسافة 10 كم",
+                    "⏱️ تحسين وقت الكارديو بنسبة 20%",
+                    "🏆 زيادة تحمل القلب بنسبة 15%"
+                ]
+            },
+            weightHistory: [
+                { date: "2023-10-01", weight: 87 },
+                { date: "2023-10-08", weight: 86 },
+                { date: "2023-10-15", weight: 85.5 },
+                { date: "2023-10-22", weight: 85 }
+            ]
+        };
+
+        // تهيئة التطبيق
+        function initApp() {
+            // محاولة تحميل البيانات من localStorage
+            const savedData = localStorage.getItem('fitnessProfileData');
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            } else {
+                // حفظ البيانات الافتراضية إذا لم تكن موجودة
+                saveData();
+            }
+            
+            // تحديث واجهة المستخدم بالبيانات المحملة
+            updateUI();
+            
+            // تعيين التاريخ الحالي كقيمة افتراضية
+            document.getElementById('weightDate').valueAsDate = new Date();
+        }
+
+        // حفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('fitnessProfileData', JSON.stringify(userData));
+        }
+
+        // تحديث واجهة المستخدم بالبيانات الحالية
+        function updateUI() {
+            // تحديث الملف الشخصي
+            document.getElementById('profileName').textContent = userData.profile.name;
+            document.getElementById('profileTitle').textContent = userData.profile.title;
+            
+            // تحديث صورة الملف الشخصي إذا كانت موجودة
+            if (userData.profile.image) {
+                document.getElementById('profileIcon').style.display = 'none';
+                document.getElementById('profileImage').style.display = 'block';
+                document.getElementById('profileImage').src = userData.profile.image;
+            }
+            
+            // تحديث بيانات كمال الأجسام
+            document.getElementById('currentWeight').textContent = userData.bodybuilding.weight + ' كغ';
+            document.getElementById('muscleMass').textContent = userData.bodybuilding.muscleMass + '%';
+            document.getElementById('fatPercentage').textContent = userData.bodybuilding.fatPercentage + '%';
+            document.getElementById('bmiValue').textContent = userData.bodybuilding.bmi;
+            
+            // تحديث تقدم القوة
+            document.getElementById('liftingProgress').textContent = '+' + userData.bodybuilding.strengthProgress.lifting + '%';
+            document.getElementById('benchProgress').textContent = '+' + userData.bodybuilding.strengthProgress.bench + '%';
+            document.getElementById('legsProgress').textContent = '+' + userData.bodybuilding.strengthProgress.legs + '%';
+            
+            document.getElementById('liftingBar').style.width = (userData.bodybuilding.strengthProgress.lifting / 20 * 100) + '%';
+            document.getElementById('benchBar').style.width = (userData.bodybuilding.strengthProgress.bench / 20 * 100) + '%';
+            document.getElementById('legsBar').style.width = (userData.bodybuilding.strengthProgress.legs / 20 * 100) + '%';
+            
+            // تحديث السعرات الحرارية
+            document.getElementById('dailyCalories').textContent = userData.bodybuilding.calories.daily + ' سعرة';
+            document.getElementById('weeklyCalories').textContent = userData.bodybuilding.calories.weekly + ' سعرة';
+            document.getElementById('monthlyCalories').textContent = userData.bodybuilding.calories.monthly + ' سعرة';
+            
+            document.getElementById('dailyCaloriesBar').style.width = (userData.bodybuilding.calories.daily / 1200 * 100) + '%';
+            document.getElementById('weeklyCaloriesBar').style.width = (userData.bodybuilding.calories.weekly / 8400 * 100) + '%';
+            document.getElementById('monthlyCaloriesBar').style.width = (userData.bodybuilding.calories.monthly / 36000 * 100) + '%';
+            
+            // تحديث القياسات الجسمية
+            document.getElementById('chestMeasurement').textContent = userData.bodybuilding.measurements.chest + ' سم';
+            document.getElementById('armMeasurement').textContent = userData.bodybuilding.measurements.arm + ' سم';
+            document.getElementById('waistMeasurement').textContent = userData.bodybuilding.measurements.waist + ' سم';
+            document.getElementById('thighMeasurement').textContent = userData.bodybuilding.measurements.thigh + ' سم';
+            
+            // تحديث بيانات اللياقة البدنية
+            document.getElementById('weeklyRunning').textContent = userData.fitness.weeklyRunning;
+            document.getElementById('cardioHours').textContent = userData.fitness.cardioHours;
+            document.getElementById('waterIntake').textContent = userData.fitness.waterIntake;
+            document.getElementById('sleepHours').textContent = userData.fitness.sleepHours;
+            
+            // تحديث صحة القلب واللياقة
+            document.getElementById('heartRate').textContent = userData.fitness.healthStats.heartRate + ' نبضة/د';
+            document.getElementById('endurance').textContent = userData.fitness.healthStats.endurance + '%';
+            document.getElementById('flexibility').textContent = userData.fitness.healthStats.flexibility + '%';
+            
+            document.getElementById('heartRateBar').style.width = (userData.fitness.healthStats.heartRate / 120 * 100) + '%';
+            document.getElementById('enduranceBar').style.width = userData.fitness.healthStats.endurance + '%';
+            document.getElementById('flexibilityBar').style.width = userData.fitness.healthStats.flexibility + '%';
+            
+            // تحديث الإنجازات
+            const achievementsList = document.getElementById('achievementsList');
+            achievementsList.innerHTML = '';
+            userData.fitness.achievements.forEach((achievement, index) => {
+                const li = document.createElement('li');
+                li.style.padding = '10px';
+                if (index < userData.fitness.achievements.length - 1) {
+                    li.style.borderBottom = '1px solid #eee';
+                }
+                li.textContent = achievement;
+                achievementsList.appendChild(li);
+            });
+            
+            // تحديث سجل الوزن
+            updateWeightTable();
+        }
+
+        // تحديث جدول الوزن
+        function updateWeightTable() {
+            const table = document.getElementById('weightTable');
+            table.innerHTML = '';
+            
+            // ترتيب سجل الوزن من الأحدث إلى الأقدم
+            const sortedHistory = [...userData.weightHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedHistory.forEach((record, index) => {
+                const row = document.createElement('tr');
+                
+                // حساب التغيير عن القياس السابق
+                let change = '';
+                if (index < sortedHistory.length - 1) {
+                    const prevWeight = sortedHistory[index + 1].weight;
+                    const diff = record.weight - prevWeight;
+                    if (diff > 0) {
+                        change = `<span style="color: red">+${diff.toFixed(1)} كغ</span>`;
+                    } else if (diff < 0) {
+                        change = `<span style="color: green">${diff.toFixed(1)} كغ</span>`;
+                    } else {
+                        change = 'لا تغيير';
+                    }
+                } else {
+                    change = 'أول قياس';
+                }
+                
+                // تنسيق التاريخ
+                const dateObj = new Date(record.date);
+                const formattedDate = dateObj.toLocaleDateString('ar-EG');
+                
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${record.weight} كغ</td>
+                    <td>${change}</td>
+                    <td>
+                        <button onclick="deleteWeightRecord(${index})" style="background: var(--accent-color); padding: 5px 10px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        // فتح تبويب
         function openTab(tabName) {
+            // إخفاء جميع المحتويات
             const tabContents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove('active');
             }
             
+            // إلغاء تنشيط جميع الأزرار
             const tabButtons = document.getElementsByClassName('tab-btn');
             for (let i = 0; i < tabButtons.length; i++) {
                 tabButtons[i].classList.remove('active');
             }
             
+            // عرض المحتوى المحدد وتنشيط الزر
             document.getElementById(tabName).classList.add('active');
             event.currentTarget.classList.add('active');
         }
-        
-        // فتح نافذة التعديل
+
+        // فتح نموذج التعديل
         function openEditModal(type) {
-            if (type === 'allMeasurements') {
-                openMeasurementsModal();
-                return;
-            }
-            
             const modal = document.getElementById('editModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
             
-            // تحديد المحتوى بناءً على النوع
+            let title = '';
+            let content = '';
+            
             switch(type) {
                 case 'profile':
-                    modalTitle.textContent = 'تعديل الملف الشخصي';
-                    modalBody.innerHTML = `
+                    title = 'تعديل الملف الشخصي';
+                    content = `
                         <div class="form-group">
                             <label for="editName">الاسم:</label>
-                            <input type="text" id="editName" value="أحمد محمد">
+                            <input type="text" id="editName" value="${userData.profile.name}">
                         </div>
                         <div class="form-group">
-                            <label for="editTitle">اللقب:</label>
-                            <input type="text" id="editTitle" value="لاعب كمال أجسام ولياقة بدنية">
+                            <label for="editTitle">المسمى الوظيفي:</label>
+                            <input type="text" id="editTitle" value="${userData.profile.title}">
                         </div>
                     `;
                     break;
                 case 'weight':
-                    modalTitle.textContent = 'تعديل الوزن';
-                    modalBody.innerHTML = `
+                    title = 'تعديل الوزن';
+                    content = `
                         <div class="form-group">
-                            <label for="editWeight">الوزن الحالي (كغ):</label>
-                            <input type="number" id="editWeight" value="85">
+                            <label for="editWeight">الوزن (كغ):</label>
+                            <input type="number" id="editWeight" value="${userData.bodybuilding.weight}">
+                        </div>
+                    `;
+                    break;
+                case 'muscle':
+                    title = 'تعديل كتلة العضلات';
+                    content = `
+                        <div class="form-group">
+                            <label for="editMuscle">كتلة العضلات (%):</label>
+                            <input type="number" id="editMuscle" value="${userData.bodybuilding.muscleMass}">
+                        </div>
+                    `;
+                    break;
+                case 'fat':
+                    title = 'تعديل نسبة الدهون';
+                    content = `
+                        <div class="form-group">
+                            <label for="editFat">نسبة الدهون (%):</label>
+                            <input type="number" id="editFat" value="${userData.bodybuilding.fatPercentage}">
+                        </div>
+                    `;
+                    break;
+                case 'bmi':
+                    title = 'تعديل مؤشر كتلة الجسم';
+                    content = `
+                        <div class="form-group">
+                            <label for="editBmi">مؤشر كتلة الجسم:</label>
+                            <input type="number" id="editBmi" value="${userData.bodybuilding.bmi}" step="0.1">
                         </div>
                     `;
                     break;
                 case 'strength':
-                    modalTitle.textContent = 'تعديل معدل التقدم في القوة';
-                    modalBody.innerHTML = `
+                    title = 'تعديل معدل التقدم في القوة';
+                    content = `
                         <div class="form-group">
                             <label for="editLifting">رفع الأثقال (%):</label>
-                            <input type="number" id="editLifting" value="15">
+                            <input type="number" id="editLifting" value="${userData.bodybuilding.strengthProgress.lifting}">
                         </div>
                         <div class="form-group">
                             <label for="editBench">تمرين البنش (%):</label>
-                            <input type="number" id="editBench" value="12">
+                            <input type="number" id="editBench" value="${userData.bodybuilding.strengthProgress.bench}">
                         </div>
                         <div class="form-group">
                             <label for="editLegs">تمرين الساق (%):</label>
-                            <input type="number" id="editLegs" value="18">
+                            <input type="number" id="editLegs" value="${userData.bodybuilding.strengthProgress.legs}">
                         </div>
                     `;
                     break;
                 case 'calories':
-                    modalTitle.textContent = 'تعديل حرق السعرات الحرارية';
-                    modalBody.innerHTML = `
+                    title = 'تعديل السعرات الحرارية';
+                    content = `
                         <div class="form-group">
                             <label for="editDailyCalories">السعرات اليومية:</label>
-                            <input type="number" id="editDailyCalories" value="720">
+                            <input type="number" id="editDailyCalories" value="${userData.bodybuilding.calories.daily}">
                         </div>
                         <div class="form-group">
                             <label for="editWeeklyCalories">السعرات الأسبوعية:</label>
-                            <input type="number" id="editWeeklyCalories" value="5040">
+                            <input type="number" id="editWeeklyCalories" value="${userData.bodybuilding.calories.weekly}">
                         </div>
                         <div class="form-group">
                             <label for="editMonthlyCalories">السعرات الشهرية:</label>
-                            <input type="number" id="editMonthlyCalories" value="21600">
+                            <input type="number" id="editMonthlyCalories" value="${userData.bodybuilding.calories.monthly}">
                         </div>
                     `;
                     break;
-                default:
-                    modalTitle.textContent = 'تعديل البيانات';
-                    modalBody.innerHTML = `
+                case 'health':
+                    title = 'تعديل بيانات اللياقة';
+                    content = `
                         <div class="form-group">
-                            <label for="editValue">القيمة:</label>
-                            <input type="text" id="editValue" placeholder="أدخل القيمة الجديدة">
+                            <label for="editHeartRate">سرعة دقات القلب (نبضة/د):</label>
+                            <input type="number" id="editHeartRate" value="${userData.fitness.healthStats.heartRate}">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEndurance">التحمل (%):</label>
+                            <input type="number" id="editEndurance" value="${userData.fitness.healthStats.endurance}">
+                        </div>
+                        <div class="form-group">
+                            <label for="editFlexibility">المرونة (%):</label>
+                            <input type="number" id="editFlexibility" value="${userData.fitness.healthStats.flexibility}">
                         </div>
                     `;
+                    break;
             }
             
+            modalTitle.textContent = title;
+            modalBody.innerHTML = content;
             modal.style.display = 'flex';
+            
+            // تخزين نوع التعديل في الزر
+            modal.querySelector('.save-btn').setAttribute('data-edit-type', type);
         }
-        
-        // فتح نافذة تعديل القياسات
-        function openMeasurementsModal() {
-            document.getElementById('measurementsModal').style.display = 'flex';
-        }
-        
-        // إغلاق نافذة التعديل
+
+        // إغلاق نموذج التعديل
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
         }
-        
-        // إغلاق نافذة تعديل القياسات
+
+        // حفظ التغييرات
+        function saveChanges() {
+            const modal = document.getElementById('editModal');
+            const type = modal.querySelector('.save-btn').getAttribute('data-edit-type');
+            
+            switch(type) {
+                case 'profile':
+                    userData.profile.name = document.getElementById('editName').value;
+                    userData.profile.title = document.getElementById('editTitle').value;
+                    break;
+                case 'weight':
+                    userData.bodybuilding.weight = parseFloat(document.getElementById('editWeight').value);
+                    break;
+                case 'muscle':
+                    userData.bodybuilding.muscleMass = parseFloat(document.getElementById('editMuscle').value);
+                    break;
+                case 'fat':
+                    userData.bodybuilding.fatPercentage = parseFloat(document.getElementById('editFat').value);
+                    break;
+                case 'bmi':
+                    userData.bodybuilding.bmi = parseFloat(document.getElementById('editBmi').value);
+                    break;
+                case 'strength':
+                    userData.bodybuilding.strengthProgress.lifting = parseFloat(document.getElementById('editLifting').value);
+                    userData.bodybuilding.strengthProgress.bench = parseFloat(document.getElementById('editBench').value);
+                    userData.bodybuilding.strengthProgress.legs = parseFloat(document.getElementById('editLegs').value);
+                    break;
+                case 'calories':
+                    userData.bodybuilding.calories.daily = parseFloat(document.getElementById('editDailyCalories').value);
+                    userData.bodybuilding.calories.weekly = parseFloat(document.getElementById('editWeeklyCalories').value);
+                    userData.bodybuilding.calories.monthly = parseFloat(document.getElementById('editMonthlyCalories').value);
+                    break;
+                case 'health':
+                    userData.fitness.healthStats.heartRate = parseFloat(document.getElementById('editHeartRate').value);
+                    userData.fitness.healthStats.endurance = parseFloat(document.getElementById('editEndurance').value);
+                    userData.fitness.healthStats.flexibility = parseFloat(document.getElementById('editFlexibility').value);
+                    break;
+            }
+            
+            // حفظ البيانات وتحديث الواجهة
+            saveData();
+            updateUI();
+            closeEditModal();
+        }
+
+        // فتح نموذج القياسات
+        function openMeasurementsModal() {
+            document.getElementById('editChest').value = userData.bodybuilding.measurements.chest;
+            document.getElementById('editArm').value = userData.bodybuilding.measurements.arm;
+            document.getElementById('editWaist').value = userData.bodybuilding.measurements.waist;
+            document.getElementById('editThigh').value = userData.bodybuilding.measurements.thigh;
+            
+            document.getElementById('measurementsModal').style.display = 'flex';
+        }
+
+        // إغلاق نموذج القياسات
         function closeMeasurementsModal() {
             document.getElementById('measurementsModal').style.display = 'none';
         }
-        
-        // حفظ التغييرات
-        function saveChanges() {
-            // هنا سيتم حفظ التغييرات في قاعدة البيانات أو المتغيرات
-            alert('تم حفظ التغييرات بنجاح!');
-            closeEditModal();
-        }
-        
+
         // حفظ القياسات
         function saveMeasurements() {
-            const chest = document.getElementById('editChest').value;
-            const arm = document.getElementById('editArm').value;
-            const waist = document.getElementById('editWaist').value;
-            const thigh = document.getElementById('editThigh').value;
+            userData.bodybuilding.measurements.chest = parseFloat(document.getElementById('editChest').value);
+            userData.bodybuilding.measurements.arm = parseFloat(document.getElementById('editArm').value);
+            userData.bodybuilding.measurements.waist = parseFloat(document.getElementById('editWaist').value);
+            userData.bodybuilding.measurements.thigh = parseFloat(document.getElementById('editThigh').value);
             
-            // هنا سيتم حفظ القياسات في المتغيرات أو قاعدة البيانات
-            document.querySelector('.measurement-item:nth-child(1) .measurement-value span').textContent = chest + ' سم';
-            document.querySelector('.measurement-item:nth-child(2) .measurement-value span').textContent = arm + ' سم';
-            document.querySelector('.measurement-item:nth-child(3) .measurement-value span').textContent = waist + ' سم';
-            document.querySelector('.measurement-item:nth-child(4) .measurement-value span').textContent = thigh + ' سم';
-            
-            alert('تم حفظ القياسات بنجاح!');
+            saveData();
+            updateUI();
             closeMeasurementsModal();
         }
-        
-        // تغيير الصورة
-        function changeImage() {
-            alert('سيتم فتح خيارات تحميل الصورة');
+
+        // فتح نموذج الإنجازات
+        function openAchievementsModal() {
+            document.getElementById('achievement1').value = userData.fitness.achievements[0] || '';
+            document.getElementById('achievement2').value = userData.fitness.achievements[1] || '';
+            document.getElementById('achievement3').value = userData.fitness.achievements[2] || '';
+            
+            document.getElementById('achievementsModal').style.display = 'flex';
         }
-        
+
+        // إغلاق نموذج الإنجازات
+        function closeAchievementsModal() {
+            document.getElementById('achievementsModal').style.display = 'none';
+        }
+
+        // حفظ الإنجازات
+        function saveAchievements() {
+            userData.fitness.achievements = [
+                document.getElementById('achievement1').value,
+                document.getElementById('achievement2').value,
+                document.getElementById('achievement3').value
+            ].filter(achievement => achievement.trim() !== '');
+            
+            saveData();
+            updateUI();
+            closeAchievementsModal();
+        }
+
+        // تغيير صورة الملف الشخصي
+        function changeImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        userData.profile.image = e.target.result;
+                        saveData();
+                        updateUI();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            input.click();
+        }
+
         // إضافة وزن جديد
         function addWeight() {
-            const weightValue = document.getElementById('weightValue').value;
+            const weightValue = parseFloat(document.getElementById('weightValue').value);
             const weightDate = document.getElementById('weightDate').value;
             
-            if (!weightValue || !weightDate) {
-                alert('يرجى ملء جميع الحقول');
+            if (isNaN(weightValue) || !weightDate) {
+                alert('يرجى إدخال قيمة وزن وتاريخ صحيحين');
                 return;
             }
             
-            const table = document.getElementById('weightTable');
-            const newRow = table.insertRow(0);
+            userData.weightHistory.push({
+                date: weightDate,
+                weight: weightValue
+            });
             
-            const dateCell = newRow.insertCell(0);
-            const weightCell = newRow.insertCell(1);
-            const changeCell = newRow.insertCell(2);
-            const actionsCell = newRow.insertCell(3);
+            saveData();
+            updateUI();
             
-            dateCell.textContent = weightDate;
-            weightCell.textContent = weightValue;
-            
-            if (table.rows.length > 1) {
-                const prevWeight = parseFloat(table.rows[1].cells[1].textContent);
-                const currentWeight = parseFloat(weightValue);
-                const change = (currentWeight - prevWeight).toFixed(1);
-                
-                if (change > 0) {
-                    changeCell.textContent = `+${change}`;
-                    changeCell.style.color = '#e74c3c';
-                } else if (change < 0) {
-                    changeCell.textContent = change;
-                    changeCell.style.color = '#2ecc71';
-                } else {
-                    changeCell.textContent = '0';
-                    changeCell.style.color = '#7f8c8d';
-                }
-            } else {
-                changeCell.textContent = '0';
-            }
-            
-            actionsCell.innerHTML = `
-                <i class="fas fa-edit" style="cursor:pointer; margin: 0 5px;" onclick="editWeight(this)"></i>
-                <i class="fas fa-trash" style="cursor:pointer; color: var(--accent-color);" onclick="deleteWeight(this)"></i>
-            `;
-            
+            // إعادة تعيين الحقول
             document.getElementById('weightValue').value = '';
-            document.getElementById('weightDate').value = '';
+            document.getElementById('weightDate').valueAsDate = new Date();
         }
-        
-        // تعديل سجل الوزن
-        function editWeight(element) {
-            const row = element.parentElement.parentElement;
-            const date = row.cells[0].textContent;
-            const weight = row.cells[1].textContent;
-            
-            const newWeight = prompt('أدخل الوزن الجديد:', weight);
-            if (newWeight !== null && newWeight !== '') {
-                row.cells[1].textContent = newWeight;
-                
-                // إعادة حساب التغيير
-                if (row.rowIndex > 0) {
-                    const prevWeight = parseFloat(table.rows[row.rowIndex + 1].cells[1].textContent);
-                    const currentWeight = parseFloat(newWeight);
-                    const change = (currentWeight - prevWeight).toFixed(1);
-                    
-                    if (change > 0) {
-                        row.cells[2].textContent = `+${change}`;
-                        row.cells[2].style.color = '#e74c3c';
-                    } else if (change < 0) {
-                        row.cells[2].textContent = change;
-                        row.cells[2].style.color = '#2ecc71';
-                    } else {
-                        row.cells[2].textContent = '0';
-                        row.cells[2].style.color = '#7f8c8d';
-                    }
-                }
-                
-                // تحديث التغيير للسجل التالي إذا exists
-                if (row.rowIndex < table.rows.length - 1) {
-                    const nextRow = table.rows[row.rowIndex + 1];
-                    const nextWeight = parseFloat(nextRow.cells[1].textContent);
-                    const nextChange = (nextWeight - currentWeight).toFixed(1);
-                    
-                    if (nextChange > 0) {
-                        nextRow.cells[2].textContent = `+${nextChange}`;
-                        nextRow.cells[2].style.color = '#e74c3c';
-                    } else if (nextChange < 0) {
-                        nextRow.cells[2].textContent = nextChange;
-                        nextRow.cells[2].style.color = '#2ecc71';
-                    } else {
-                        nextRow.cells[2].textContent = '0';
-                        nextRow.cells[2].style.color = '#7f8c8d';
-                    }
-                }
-            }
-        }
-        
+
         // حذف سجل الوزن
-        function deleteWeight(element) {
+        function deleteWeightRecord(index) {
             if (confirm('هل أنت متأكد من أنك تريد حذف هذا السجل؟')) {
-                const row = element.parentElement.parentElement;
-                const table = document.getElementById('weightTable');
-                
-                // إذا كان هناك سجل بعده، نقوم بتحديث قيم التغيير
-                if (row.rowIndex < table.rows.length - 1) {
-                    const nextRow = table.rows[row.rowIndex + 1];
-                    nextRow.cells[2].textContent = '0';
-                    nextRow.cells[2].style.color = '#7f8c8d';
-                }
-                
-                row.parentElement.removeChild(row);
+                userData.weightHistory.splice(index, 1);
+                saveData();
+                updateUI();
             }
         }
-        
-        // تعيين التاريخ الحالي كقيمة افتراضية
-        document.getElementById('weightDate').valueAsDate = new Date();
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        window.onload = initApp;
     </script>
 </body>
 </html>
+
+
+
+
+معدل التقدم في القوة
